@@ -3,6 +3,7 @@ import {VNode} from "../virtualDOM/h";
 import {diff, PatchTag} from "./diff";
 import {createElement, updateElement} from "../render/renderDOM";
 import {ClassComponentConfig} from "../virtualDOM/component";
+import {flattenArray} from "../util";
 
 let workInProgress: Fiber = null // 记录当前正在运行的fiber
 let pendingCommit: Array<Fiber> = [] // 记录需要提交更新的节点
@@ -92,6 +93,7 @@ function performUnitWork(fiber: Fiber) {
         const component = vnode.type
         // @ts-ignore
         let children = component(vnode.props)
+        console.log(children)
         reconcileChildren(fiber, children)
     }
 
@@ -117,7 +119,6 @@ function performUnitWork(fiber: Fiber) {
         }
 
         let children = instance.render()
-        console.log(children)
         reconcileChildren(fiber, children)
     }
 
@@ -129,10 +130,25 @@ function performUnitWork(fiber: Fiber) {
     }
 }
 
-function reconcileChildren(parentFiber: Fiber, newChildren: Array<VNode>) {
-    if (!Array.isArray(newChildren)) {
-        newChildren = [newChildren]
+function reconcileChildren(parentFiber: Fiber, vnodeList: Array<VNode>) {
+    if (!Array.isArray(vnodeList)) {
+        vnodeList = [vnodeList]
     }
+    // bugfix：处理通过props传入children为数组的情况
+    vnodeList = flattenArray(vnodeList)
+    // 处理vnode为单个数字或者字符串的情形
+    let newChildren = vnodeList.map(vnode => {
+        if (typeof vnode === 'string' || typeof vnode === 'number') {
+            return {
+                type: 'text',
+                props: {
+                    nodeValue: vnode,
+                }
+            }
+        }
+        return vnode
+    })
+
     // 更新parentFiber.child
     diff(parentFiber, newChildren)
 }
