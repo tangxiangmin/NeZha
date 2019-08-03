@@ -147,7 +147,7 @@ function reconcileChildren(parentFiber: Fiber, vnodeList: Array<VNode>) {
             }
         }
         return vnode
-    })
+    }).filter(item => !!item)
 
     // 更新parentFiber.child
     diff(parentFiber, newChildren)
@@ -202,7 +202,8 @@ function commit(fiber: Fiber) {
                 container.appendChild(fiber.stateNode)
                 break
             case PatchTag.UPDATE:
-                updateElement(fiber.stateNode, {}, fiber.vnode.props)
+                let alternate = fiber.alternate
+                updateElement(fiber.stateNode, alternate.vnode.props, fiber.vnode.props)
                 break
             case PatchTag.DELETE:
                 container.removeChild(fiber.stateNode)

@@ -33,21 +33,19 @@ class App extends Component {
 
     render() {
         const {flag, list} = this.state
+
+        const vnode = flag ? ' show Flag' : null
+
         return (
             <div className="app">
+
                 <button onClick={this.toggle}>
                     {flag ? 'flag is yes' : 'flag is no'}
                 </button>
 
-                <button onClick={this.addListItem}>add item</button>
+                {vnode}
 
-                <ul>
-                    {
-                        list.map(item => {
-                            return (<li>{item}</li>)
-                        })
-                    }
-                </ul>
+
             </div>
         )
     }

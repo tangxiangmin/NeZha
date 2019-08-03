@@ -33,15 +33,21 @@ export function updateElement(element: any, props: any, newProps: any) {
     if (!newProps) {
         return
     }
-    Object.keys(newProps).forEach(key => {
-        if (key === 'nodeValue') {
-            // 处理文本节点
-            element[key] = newProps[key]
-        } else {
-            // 处理其他值
-            updateProperty(element, key, props[key], newProps[key])
-        }
-    })
+    Object.keys(newProps)
+        .forEach(key => {
+            // 相同的属性跳过更新
+            if (props[key] === newProps[key]) {
+                return
+            }
+
+            if (key === 'nodeValue') {
+                // 处理文本节点
+                element[key] = newProps[key]
+            } else {
+                // 处理其他值
+                updateProperty(element, key, props[key], newProps[key])
+            }
+        })
 }
 
 // export function appendAllChildren(fiber) {

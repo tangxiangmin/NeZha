@@ -12,7 +12,7 @@ export interface ClassComponentConfig {
 }
 
 export default class Component {
-    static _isClassComponent = true
+    static _isClassComponent = true // 判断是函数组件还是类组件
     fiber: Fiber
     props: Object
 

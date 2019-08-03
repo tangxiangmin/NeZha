@@ -43,6 +43,7 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
                 newFiber = createFiber(newNode, PatchTag.UPDATE)
                 newFiber.children = oldFiber.children
                 newFiber.stateNode = oldFiber.stateNode // dom类型的fiber其stateNode为dom实例
+                newFiber.alternate = oldFiber
             } else {
                 // 如果类型不同，则需要删除对应位置的旧节点，然后插入新的节点
                 // todo 添加key判断，如果存在key相同的子节点，只需要移动位置即可
@@ -71,6 +72,6 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
     for (; i < oldChildren.length; ++i) {
         let oldFiber = oldChildren[i]
         oldFiber.patchTag = PatchTag.DELETE
-        enqueueUpdate(parentFiber, oldFiber)
+        enqueueUpdate(parentFiber, oldFiber) // 由于被删除的节点不存在fiber树中，因此交给父节点托管
     }
 }
