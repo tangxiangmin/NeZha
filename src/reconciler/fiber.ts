@@ -2,7 +2,7 @@ import {VNode} from "../virtualDOM/h";
 import {PatchTag} from "./diff";
 import {isFunc, isStr} from "../util";
 
-export enum FiberTag {HostRoot, HostComponent, FunctionComponent}
+export enum FiberTag {HostRoot, HostComponent, FunctionComponent, ClassComponent}
 
 
 export interface Fiber {
@@ -11,23 +11,23 @@ export interface Fiber {
     return?: Fiber,
     sibling?: Fiber,
     child?: Fiber,
+    children?: Array<Fiber>,
 
     vnode: VNode,
     tag: FiberTag,
 
     patchTag: PatchTag, // 当前fiber对应的改动
     stateNode?: any, // dom实例或class组件实例
+
+    newState?: Object, //修改state
+    alternate?: Fiber // 旧的fiber
 }
 
 export function createFiberRoot(vnode: VNode, el: any): Fiber {
     // fiber链表头节点
-    let root: Fiber = {
-        tag: FiberTag.HostRoot,
-        vnode: vnode,
-        stateNode: el,
-        updateQueue: [],
-        patchTag: PatchTag.NONE
-    }
+    let root = createFiber(vnode, PatchTag.NONE)
+    root.tag = FiberTag.HostRoot
+    root.stateNode = el
     return root
 }
 
@@ -38,7 +38,10 @@ export function createFiber(vnode: VNode, patchTag: PatchTag): Fiber {
         return: null,
         sibling: null,
         child: null,
-        tag: null
+        tag: null,
+        children: [],
+        updateQueue: [],
+        stateNode: null
     }
 
     // 初始化fiber的节点类型
@@ -46,7 +49,12 @@ export function createFiber(vnode: VNode, patchTag: PatchTag): Fiber {
     if (isStr(type)) {
         fiber.tag = FiberTag.HostComponent
     } else if (isFunc(type)) {
-        fiber.tag = FiberTag.FunctionComponent
+        // @ts-ignore
+        if (type._isClassComponent) {
+            fiber.tag = FiberTag.ClassComponent
+        } else {
+            fiber.tag = FiberTag.FunctionComponent
+        }
     }
     return fiber
 }

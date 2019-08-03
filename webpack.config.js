@@ -13,31 +13,26 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts|.tsx$/,
-                exclude: [
-                    path.resolve(__dirname, 'node_modules'),
-                ],
-                use: () => {
-                    return [
-                        {
-                            loader: ['ts-loader'],
-                        },
-                    ];
-                },
-            },
-            {
-                test: /\.jsx?$/,
+                test: /\.(ts|js)x?$/,
                 loader: 'babel-loader',
                 options: {
                     sourceMap: true,
                     presets: [
-                        [require.resolve('@babel/preset-env')],
+                        [require.resolve('@babel/preset-typescript'), { jsxPragma: 'h' }],
+                        [require.resolve('@babel/preset-env'), {
+                            targets: {
+                                browsers: ['last 2 versions', 'IE >= 9']
+                            },
+                            modules: false,
+                            loose: true
+                        }],
                         [require.resolve('@babel/preset-react')],
                     ],
                     plugins: [
-                        [require.resolve('@babel/plugin-transform-react-jsx'), {
-                            pragma: 'h',
-                        }],
+                        [require.resolve('@babel/plugin-transform-runtime')],
+                        [require.resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', pragmaFrag: 'Fragment' }],
+                        [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+                        [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
                     ]
                 }
             },

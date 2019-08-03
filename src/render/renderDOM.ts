@@ -7,7 +7,12 @@ import {createFiberRoot, Fiber} from '../reconciler/fiber'
 import {scheduleWork} from '../reconciler'
 import {VNode} from "../virtualDOM/h";
 
+function isValidAttr(name) {
+    return !['children', 'key'].includes(name)
+}
+
 function updateProperty(element: any, name: string, value: any, newValue: any) {
+    let whiteList = ['children']
     if (name === 'style') {
         for (let key in newValue) {
             let style = !newValue || !newValue[key] ? '' : newValue[key]
@@ -19,7 +24,7 @@ function updateProperty(element: any, name: string, value: any, newValue: any) {
             element.removeEventListener(name, value)
         }
         element.addEventListener(name, newValue)
-    } else {
+    } else if (isValidAttr(name)) {
         element.setAttribute(name, newValue)
     }
 }
@@ -65,6 +70,13 @@ export function createElement(fiber: Fiber) {
 }
 
 
+function clearContainer(container: any) {
+    let rootSibling;
+    while ((rootSibling = container.lastChild)) {
+        container.removeChild(rootSibling);
+    }
+}
+
 /**
  *
  * @param vnode
@@ -72,6 +84,7 @@ export function createElement(fiber: Fiber) {
  * 从组件树根节点开始，依次渲染子节点，然后将其挂载到父节点上
  */
 function render(vnode: VNode, el: any) {
+    clearContainer(el)
     let rootFiber = createFiberRoot(vnode, el)
     scheduleWork(rootFiber)
 }

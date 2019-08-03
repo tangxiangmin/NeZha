@@ -12,4 +12,4 @@ Nezha
 * [ ] 事件系统
 * [ ] diff算法、key
 * [ ] Fiber Reconciler简单实现
-* [ ]笔记整理
+* [ ] 笔记整理

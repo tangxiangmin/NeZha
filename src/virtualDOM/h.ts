@@ -1,8 +1,9 @@
 /**
  * 2019-07-31 15:04
  */
-interface Props {
-    children?: []
+export interface Props {
+    children?: [],
+    nodeValue?: string,
 }
 
 export interface VNode {

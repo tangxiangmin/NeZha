@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es6",
+    "experimentalDecorators": true,
     "jsx": "react",
-    "allowJs": true,
+    "jsxFactory": "h",
+    "baseUrl": ".",
+    "target": "es2018",
+    "module": "es2015",
+    "moduleResolution": "node",
     "sourceMap": true
   }
 }

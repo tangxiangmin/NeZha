@@ -4,9 +4,12 @@
 
 
 import h from './virtualDOM/h'
+import Component from './virtualDOM/component'
+
 import renderDOM from './render/renderDOM'
 
 export {
     h,
-    renderDOM
+    renderDOM,
+    Component
 }
