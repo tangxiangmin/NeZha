@@ -25,17 +25,31 @@ class App extends Component {
     addListItem = (e) => {
         let list = this.state.list
 
-        list.push('new item')
+        list.push('new item:' + Math.random())
         this.setState({
             list: list
         })
+    }
+
+    get list() {
+        let list = this.state.list
+        return (
+            <div>
+                <button onClick={this.addListItem}>add Item</button>
+                <ul>
+                    {
+                        list.map(item => (<li>{item}</li>))
+                    }
+                </ul>
+            </div>
+
+        )
     }
 
     render() {
         const {flag, list} = this.state
 
         const vnode = flag ? ' show Flag' : null
-
         return (
             <div className="app">
 
@@ -45,6 +59,9 @@ class App extends Component {
 
                 {vnode}
 
+                {
+                    this.list
+                }
 
             </div>
         )

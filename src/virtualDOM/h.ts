@@ -11,7 +11,7 @@ export interface VNode {
     props: Props,
 }
 
-function h(type: Function | string, props: Props, ...children: any) {
+function h(type: Function | string, props: any, ...children: any): VNode {
     if (!props) {
         props = {}
     }

@@ -12,7 +12,6 @@ function isValidAttr(name) {
 }
 
 function updateProperty(element: any, name: string, value: any, newValue: any) {
-    let whiteList = ['children']
     if (name === 'style') {
         for (let key in newValue) {
             let style = !newValue || !newValue[key] ? '' : newValue[key]
@@ -49,18 +48,6 @@ export function updateElement(element: any, props: any, newProps: any) {
             }
         })
 }
-
-// export function appendAllChildren(fiber) {
-//     let firstChild = fiber.child
-//     let element = fiber.stateNode
-//     while (firstChild) {
-//         if (firstChild.parentNode !== element) {
-//             element.appendChild(firstChild.stateNode)
-//         }
-//
-//         firstChild = firstChild.sibling
-//     }
-// }
 
 export function createElement(fiber: Fiber) {
     const {vnode} = fiber;

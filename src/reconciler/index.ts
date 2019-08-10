@@ -1,43 +1,47 @@
-import {Fiber, FiberTag, getFiberChildren} from "./fiber";
+import {Fiber, FiberTag} from "./fiber";
 import {VNode} from "../virtualDOM/h";
 import {diff, PatchTag} from "./diff";
 import {createElement, updateElement} from "../render/renderDOM";
 import {ClassComponentConfig} from "../virtualDOM/component";
 import {flattenArray} from "../util";
+import {hasMoreWork, requestHostCallback, shouldYield} from "./scheduler";
 
 let workInProgress: Fiber = null // 记录当前正在运行的fiber
 let pendingCommit: Array<Fiber> = [] // 记录需要提交更新的节点
 let currentWorkRoot: Fiber = null
 
-const deffer = typeof Promise === 'function' ? cb => Promise.resolve().then(cb) : setTimeout
-// 从某个需要更新的fiber开始比较子节点
-// 初始化时从FiberRoot开始
+// 从根节点开始更新fiber树
 // todo 计算节点的可使用工作时间
 export function scheduleWork(fiber: Fiber) {
     fiber.patchTag = PatchTag.UPDATE
     workInProgress = fiber
     currentWorkRoot = fiber
 
-    // 放入延迟队列执行
-    deffer(workLoop)
+    requestHostCallback(workLoop)
 }
 
-function workLoop() {
+// 循环构建fiber树
+function workLoop(): hasMoreWork {
     // 检测更新队列是否待更新的节点
     if (!workInProgress) {
-        console.log(`当前fiber无更新任务，退出:`, {workInProgress})
-        return
+        return false
     }
 
-    // 某个节点发生变化，则其该节点和其子节点均需要进行diff操作
+    // todo 检测之前更新过的节点是否已发生变化，如果是则需要重新从根节点执行workLoop
+
     // 整个工作流程为：首先从根节点向下更新fiber树，然后从叶子节点向上complete准备提交
     while (workInProgress) {
-        workInProgress = performUnitWork(workInProgress)
+        if (shouldYield()) {
+            return true
+        } else {
+            workInProgress = performUnitWork(workInProgress)
+        }
     }
 
     if (pendingCommit.length) {
         commitWork(pendingCommit)
     }
+    return false
 }
 
 function performUnitWork(fiber: Fiber) {
@@ -79,7 +83,7 @@ function performUnitWork(fiber: Fiber) {
         }
     }
 
-    return null // 遍历fiber完毕，则退出workLoop循环
+    return workInProgress = null  // 遍历fiber完毕，则退出workLoop循环
 
     // 处理根节点
     function updateHost(fiber: Fiber) {
@@ -93,7 +97,6 @@ function performUnitWork(fiber: Fiber) {
         const component = vnode.type
         // @ts-ignore
         let children = component(vnode.props)
-        console.log(children)
         reconcileChildren(fiber, children)
     }
 
@@ -155,7 +158,6 @@ function reconcileChildren(parentFiber: Fiber, vnodeList: Array<VNode>) {
 
 // 保存需要开始处理的Fiber节点
 function completeWork(fiber: Fiber) {
-    // 初始化当前fiber的dom实例
     // todo 应该在最后统一实例化，避免中途某些不必要实例化导致的性能浪费
     if (fiber.tag === FiberTag.HostComponent && !fiber.stateNode) {
         let instance = createElement(fiber)
@@ -166,6 +168,7 @@ function completeWork(fiber: Fiber) {
     if (fiber.patchTag !== PatchTag.NONE) {
         pendingCommit.push(fiber)
     }
+    
     if (fiber.updateQueue && fiber.updateQueue.length) {
         pendingCommit = pendingCommit.concat(...fiber.updateQueue)
         fiber.updateQueue = [] // 清空updateQueue

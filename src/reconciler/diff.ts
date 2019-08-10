@@ -5,7 +5,7 @@
 
 
 import {VNode} from "../virtualDOM/h";
-import {Fiber, createFiber, enqueueUpdate, getFiberChildren} from "./fiber";
+import {Fiber, createFiber, enqueueUpdate} from "./fiber";
 
 // 单个DOM节点diff时可能进行的操作
 export enum PatchTag {
