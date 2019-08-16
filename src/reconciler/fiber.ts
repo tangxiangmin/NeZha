@@ -2,7 +2,12 @@ import {VNode} from "../virtualDOM/h";
 import {PatchTag} from "./diff";
 import {isFunc, isStr} from "../util";
 
-export enum FiberTag {HostRoot, HostComponent, FunctionComponent, ClassComponent}
+export enum FiberTag {
+    HostRoot = 'HostRoot',
+    HostComponent = 'HostComponent',
+    FunctionComponent = 'FunctionComponent',
+    ClassComponent = 'ClassComponent'
+}
 
 
 export interface Fiber {
@@ -28,6 +33,7 @@ export function createFiberRoot(vnode: VNode, el: any): Fiber {
     let root = createFiber(vnode, PatchTag.NONE)
     root.tag = FiberTag.HostRoot
     root.stateNode = el
+    root.alternate = root
     return root
 }
 
@@ -71,9 +77,5 @@ export function getFiberChildren(fiber: Fiber) {
 }
 
 export function enqueueUpdate(fiber: Fiber, update: Fiber): void {
-    if (!fiber.updateQueue) {
-        fiber.updateQueue = []
-    }
-
     fiber.updateQueue.push(update)
 }

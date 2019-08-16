@@ -3,6 +3,7 @@
  */
 import {h, Component, renderDOM} from '../src/index.ts'
 
+// props和children属性
 const Test = ({msg, children}) => {
     // console.log(children)
     return (<div className="test">
@@ -11,31 +12,39 @@ const Test = ({msg, children}) => {
     </div>)
 }
 
-class App extends Component {
-    state = {
-        flag: true,
-        list: [1, 2]
-    }
+const PropsDemo = () => {
 
-    toggle = (e) => {
-        this.setState({
-            flag: !this.state.flag
-        })
+    return (
+        <Test msg={"hello"}>
+            <p>this is a child</p>
+        </Test>
+    )
+}
+
+// 事件和列表渲染
+class ListDemo extends Component {
+    state = {
+        list: [1, 2]
     }
     addListItem = (e) => {
         let list = this.state.list
 
         list.push('new item:' + Math.random())
-        this.setState({
-            list: list
-        })
+        this.setState({list})
     }
 
-    get list() {
+    deleteListItem = () => {
+        let list = this.state.list
+        list.pop()
+        this.setState({list})
+    }
+
+    render() {
         let list = this.state.list
         return (
             <div>
                 <button onClick={this.addListItem}>add Item</button>
+                <button onClick={this.deleteListItem}>delete Item</button>
                 <ul>
                     {
                         list.map(item => (<li>{item}</li>))
@@ -45,34 +54,51 @@ class App extends Component {
 
         )
     }
+}
+
+class FlagDemo extends Component {
+    state = {
+        flag: true,
+    }
+
+    toggle = (e) => {
+        this.setState({
+            flag: !this.state.flag
+        })
+    }
 
     render() {
-        const {flag, list} = this.state
-
+        const {flag} = this.state
         const vnode = flag ? ' show Flag' : null
-        return (
-            <div className="app">
 
+        return (
+            <div>
                 <button onClick={this.toggle}>
                     {flag ? 'flag is yes' : 'flag is no'}
                 </button>
 
                 {vnode}
+            </div>
+        )
+    }
+}
 
-                {
-                    this.list
-                }
+class App extends Component {
+    render() {
+        return (
+            <div className="app">
+                <FlagDemo/>
 
+                <ListDemo/>
+                <PropsDemo/>
             </div>
         )
     }
 }
 
 //
-// let vnode = (<Test msg={"hello"}>
-//     <p>this is a child</p>
-// </Test>)
-let vnode = (<App></App>)
+
+let vnode = (<App/>)
 
 renderDOM(vnode, document.querySelector("#app"))
 

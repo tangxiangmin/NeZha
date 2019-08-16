@@ -7,7 +7,7 @@ import {createFiberRoot, Fiber} from '../reconciler/fiber'
 import {scheduleWork} from '../reconciler'
 import {VNode} from "../virtualDOM/h";
 
-function isValidAttr(name) {
+export function isValidAttr(name) {
     return !['children', 'key'].includes(name)
 }
 
