@@ -1,14 +1,32 @@
 import {Fiber, FiberTag} from "./fiber";
 import {PatchTag} from "./diff";
-import {createElement, updateElement} from "../render/renderDOM";
+import {createElement, insertDOM, removeDOM, replaceDOM, updateElement} from "../render/renderDOM";
 
+// 开始依次提交变更，根据patchTag执行对应逻辑
 export default function commitWork(currentWorkRoot: Fiber) {
     let updateQueue = currentWorkRoot.updateQueue
+    // console.log(updateQueue)
+
+    updateQueue.forEach((fiber: Fiber) => beforeCommit(fiber))
+
     updateQueue.forEach((fiber: Fiber) => commit(fiber))
+
+    currentWorkRoot.updateQueue = []
 }
 
-// 提交单个fiber，根据patchTag执行对应逻辑，然后调用
-// pendingCommit的顺序为后续遍历，因此叶子节点最先执行
+// 阶段一
+function beforeCommit(fiber: Fiber) {
+    if (fiber.tag === FiberTag.HostComponent) {
+        const {patchTag} = fiber
+        switch (patchTag) {
+            case PatchTag.MOVE:
+                beforeMoveNode(fiber)
+                break
+        }
+    }
+}
+
+// 阶段二
 function commit(fiber: Fiber) {
     let parentFiber = fiber.return
     if (!parentFiber) {
@@ -31,6 +49,7 @@ function commit(fiber: Fiber) {
                 break
             case PatchTag.MOVE:
                 moveNode(fiber)
+                updateNode(fiber)
                 break
             case PatchTag.REPLACE:
                 replaceNode(fiber)
@@ -39,12 +58,12 @@ function commit(fiber: Fiber) {
     }
 }
 
-// todo 将下面方法修改为跨平台的
+// todo 下面方法应该为跨平台的
 function removeNode(fiber) {
     let parent = findParentHostComponent(fiber)
     let container = parent.stateNode
 
-    container.removeChild(fiber.stateNode)
+    removeDOM(container, fiber.stateNode)
     fiber.return = null
 }
 
@@ -59,25 +78,34 @@ function insertNode(fiber) {
 
     createStateNode(fiber)
 
-    container.appendChild(fiber.stateNode)
+    let index = fiber.index
+
+    insertDOM(container, fiber.stateNode, index)
 }
 
 function replaceNode(fiber) {
-    let current = fiber.alternate
-    let sibling = current.stateNode
-
     let parent = findParentHostComponent(fiber)
     let container = parent.stateNode
 
     createStateNode(fiber)
 
-    container.insertBefore(fiber.stateNode, sibling)
-    container.removeChild(sibling)
+    replaceDOM(container, fiber.stateNode, fiber.alternate.stateNode)
 }
 
-// todo 根据key实现移动node
+// 交换两个节点的位置
+// 具体步骤为：先删除待move的节点，然后将其按顺序放在指定位置
+function beforeMoveNode(fiber) {
+    let parent = findParentHostComponent(fiber)
+    let container = parent.stateNode
+    removeDOM(container, fiber.stateNode)
+}
+
 function moveNode(fiber) {
-    console.log('todo moveNode')
+    let parent = findParentHostComponent(fiber)
+    let container = parent.stateNode
+
+    let index = fiber.index // 现在fiber在父节点中的索引
+    insertDOM(container, fiber.stateNode, index)
 }
 
 // 向上找到最新的DOM节点类型的父节点
@@ -89,6 +117,7 @@ function findParentHostComponent(fiber): Fiber {
     return parent
 }
 
+// 初始化节点
 function createStateNode(fiber): void {
     if (fiber.tag === FiberTag.HostComponent && !fiber.stateNode) {
         fiber.stateNode = createElement(fiber)

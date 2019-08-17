@@ -1,6 +1,7 @@
 import {VNode} from "../virtualDOM/h";
 import {PatchTag} from "./diff";
 import {isFunc, isStr} from "../util";
+import {type} from "os";
 
 export enum FiberTag {
     HostRoot = 'HostRoot',
@@ -16,7 +17,7 @@ export interface Fiber {
     return?: Fiber,
     sibling?: Fiber,
     child?: Fiber,
-    children?: Array<Fiber>,
+    index?: number, // 当前fiber在兄弟节点中的顺序
 
     vnode: VNode,
     tag: FiberTag,
@@ -45,7 +46,6 @@ export function createFiber(vnode: VNode, patchTag: PatchTag): Fiber {
         sibling: null,
         child: null,
         tag: null,
-        children: [],
         updateQueue: [],
         stateNode: null
     }
@@ -74,6 +74,30 @@ export function getFiberChildren(fiber: Fiber) {
         child = child.sibling
     }
     return children
+}
+
+
+export function getExistingChildren(fiber): Map<string | number, Fiber> {
+    const existingChildren: Map<string | number, Fiber> = new Map();
+
+    let child: Fiber = fiber.child
+
+    let count: number = 0
+    while (child) {
+        let vnode = child.vnode
+        let key = vnode.key === undefined ? count : vnode.key
+
+        if (!existingChildren.has(key)) {
+            existingChildren.set(key, child)
+        } else {
+            console.error(`列表节点中key必须是唯一的`)
+        }
+
+        child = child.sibling
+        count++
+    }
+
+    return existingChildren
 }
 
 export function enqueueUpdate(fiber: Fiber, update: Fiber): void {

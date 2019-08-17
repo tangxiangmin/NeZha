@@ -9,18 +9,20 @@ export interface Props {
 export interface VNode {
     type: Function | string
     props: Props,
+    key?: number | string,
 }
 
 function h(type: Function | string, props: any, ...children: any): VNode {
     if (!props) {
         props = {}
-    }
-
+    }   
+    
     props.children = children
-
+    
     return {
         type,
-        props
+        props,
+        key: props.key
     }
 }
 

@@ -5,7 +5,7 @@
 
 
 import {VNode} from "../virtualDOM/h";
-import {createFiber, enqueueUpdate, Fiber, FiberTag, getFiberChildren} from "./fiber";
+import {createFiber, enqueueUpdate, Fiber, FiberTag, getExistingChildren, getFiberChildren} from "./fiber";
 import {ClassComponentConfig} from "../virtualDOM/component";
 import {flattenArray} from "../util";
 import {currentWorkRoot} from "./index";
@@ -114,29 +114,35 @@ function isSameParams(oldAttrs: Object, newAttrs: Object) {
 
 // 比较新旧fiber的子节点，并将可用的fiber节点转换为fiber
 export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
-    let current = parentFiber.alternate
-
-    const oldChildren = current ? getFiberChildren(current) : [];
     let prevFiber = null
-    let i
-    // 新节点与旧节点对比
-    for (i = 0; i < newChildren.length; ++i) {
+    let i = 0
+
+    let current = parentFiber.alternate
+    const oldChildren = getFiberChildren(current)
+    const existingChildren = getExistingChildren(current) // 由key属性组成的节点映射，通过移动直接复用
+
+    // 新旧节点逐个diff
+    for (; i < newChildren.length; ++i) {
         let newNode = newChildren[i]
-        let oldFiber = oldChildren[i]
         let newFiber: Fiber
-        if (!newNode) {
-            continue
-        }
+        let oldFiber: Fiber
+
+        let key = newNode.key === undefined ? i : newNode.key
+
+        oldFiber = existingChildren.get(key)
+
         if (oldFiber) {
-            // todo 添加key判断，如果存在key相同的子节点，只需要移动位置即可
             if (isSameVnode(newNode, oldFiber)) {
-                // 如果存在相同类型的旧节点，则可以直接复用对应的dom实例，即newFiber.stateNode
-
-                // 判断属性是否发生变化，如果未变化在不需要更新
-                let needUpdate = isSameParams(newNode.props, oldFiber.vnode.props)
-
-                newFiber = createFiber(newNode, needUpdate ? PatchTag.UPDATE : PatchTag.NONE)
-                newFiber.children = oldFiber.children
+                // 判断位置是否相同
+                if (oldFiber.index === i) {
+                    // 如果存在相同类型的旧节点，则可以直接复用对应的dom实例，即newFiber.stateNode
+                    // 判断属性是否发生变化，如果未变化在不需要更新
+                    let needUpdate = isSameParams(newNode.props, oldFiber.vnode.props)
+                    newFiber = createFiber(newNode, needUpdate ? PatchTag.UPDATE : PatchTag.NONE)
+                } else {
+                    // todo 会存在同时移动和更新的场景，patchTag需要支持，临时处理为在commit move时调用updateNode
+                    newFiber = createFiber(newNode, PatchTag.MOVE);
+                }
                 newFiber.stateNode = oldFiber.stateNode // 复用实例
             } else {
                 // 如果类型不同，则需要删除对应位置的旧节点，然后插入新的节点
@@ -148,6 +154,8 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
             newFiber = createFiber(newNode, PatchTag.ADD)
             newFiber.alternate = newFiber
         }
+
+        newFiber.index = i
 
         // 调整fiber之间的引用，构建新的fiber树
         newFiber.return = parentFiber

@@ -70,6 +70,27 @@ function clearContainer(container: any) {
     }
 }
 
+
+// 向父容器插入DOM节点
+export function insertDOM(container, node, index) {
+    let children = container.children
+
+    if (children[index]) {
+        container.insertBefore(node, children[index])
+    } else {
+        container.appendChild(node)
+    }
+}
+
+export function removeDOM(container, node) {
+    container.removeChild(node)
+}
+
+export function replaceDOM(container, newNode, oldNode) {
+    container.insertBefore(newNode, oldNode)
+    container.removeChild(oldNode)
+}
+
 /**
  *
  * @param vnode
