@@ -121,6 +121,7 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
     const oldChildren = getFiberChildren(current)
     const existingChildren = getExistingChildren(current) // 由key属性组成的节点映射，通过移动直接复用
 
+    let insertCount = 0
     // 新旧节点逐个diff
     for (; i < newChildren.length; ++i) {
         let newNode = newChildren[i]
@@ -133,8 +134,8 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
 
         if (oldFiber) {
             if (isSameVnode(newNode, oldFiber)) {
-                // 判断位置是否相同
-                if (oldFiber.index === i) {
+                // 判断位置是否相同，需要排除新插入的节点
+                if (oldFiber.index === (i - insertCount)) {
                     // 如果存在相同类型的旧节点，则可以直接复用对应的dom实例，即newFiber.stateNode
                     // 判断属性是否发生变化，如果未变化在不需要更新
                     let needUpdate = isSameParams(newNode.props, oldFiber.vnode.props)
@@ -150,6 +151,7 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
             }
             newFiber.alternate = oldFiber
         } else {
+            insertCount++
             // 当前位置不存在旧节点，表示新增
             newFiber = createFiber(newNode, PatchTag.ADD)
             newFiber.alternate = newFiber

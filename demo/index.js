@@ -62,7 +62,7 @@ class ListDemo extends Component {
                 <button onClick={this.unshift}>unshift item</button>
                 <ul>
                     {
-                        list.map(item => (<li key={item}>{item}</li>))
+                        list.map(item => (<li key={key}>{item}</li>))
                     }
                 </ul>
             </div>
