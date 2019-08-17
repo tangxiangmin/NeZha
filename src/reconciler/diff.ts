@@ -118,7 +118,6 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
     let i = 0
 
     let current = parentFiber.alternate
-    const oldChildren = getFiberChildren(current)
     const existingChildren = getExistingChildren(current) // 由key属性组成的节点映射，通过移动直接复用
 
     let insertCount = 0
@@ -129,7 +128,6 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
         let oldFiber: Fiber
 
         let key = newNode.key === undefined ? i : newNode.key
-
         oldFiber = existingChildren.get(key)
 
         if (oldFiber) {
@@ -150,6 +148,7 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
                 newFiber = createFiber(newNode, PatchTag.REPLACE)
             }
             newFiber.alternate = oldFiber
+            existingChildren.delete(key)
         } else {
             insertCount++
             // 当前位置不存在旧节点，表示新增
@@ -170,11 +169,10 @@ export function diff(parentFiber: Fiber, newChildren: Array<VNode>) {
     }
 
     // 移除剩余未被比较的旧节点
-    for (; i < oldChildren.length; ++i) {
-        let oldFiber = oldChildren[i]
+    existingChildren.forEach(oldFiber => {
         oldFiber.patchTag = PatchTag.DELETE
         enqueueUpdate(parentFiber, oldFiber) // 由于被删除的节点不存在fiber树中，因此交给父节点托管
-    }
+    })
 }
 
 // 保存需要开始处理的Fiber节点
