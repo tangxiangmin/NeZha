@@ -10,6 +10,8 @@ export default function commitWork(currentWorkRoot: Fiber) {
     updateQueue.forEach((fiber: Fiber) => beforeCommit(fiber))
 
     updateQueue.forEach((fiber: Fiber) => commit(fiber))
+    
+    
 
     currentWorkRoot.updateQueue = []
 }

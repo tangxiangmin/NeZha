@@ -6,7 +6,6 @@ import {Fiber} from "../reconciler/fiber";
 import {scheduleWork} from "../reconciler";
 import {PatchTag} from "../reconciler/diff";
 
-
 export interface ClassComponentConfig {
     props: Props
 }
@@ -14,7 +13,8 @@ export interface ClassComponentConfig {
 export default class Component {
     static _isClassComponent = true // 判断是函数组件还是类组件
     fiber: Fiber
-    props: Object
+    props: Props
+    state: Object
 
     constructor({props}: ClassComponentConfig) {
         this.props = props
@@ -22,7 +22,8 @@ export default class Component {
 
     setState(newState: any, cb?: Function) {
         let fiber = this.fiber
-        fiber.newState = newState
+        let oldState = fiber.newState || {}
+        fiber.newState = Object.assign(oldState, newState)
 
         fiber.patchTag = PatchTag.UPDATE
 

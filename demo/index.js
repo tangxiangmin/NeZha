@@ -1,119 +1,65 @@
 /**
- * 2019-07-31 15:01
+ * 2019/10/11 下午10:00
  */
 import {h, Component, renderDOM} from '../src/index.ts'
 
-// props和children属性
-const Test = ({msg, children}) => {
-    // console.log(children)
-    return (<div className="test">
-        <p>inner test {msg}</p>
-        {children}
-    </div>)
-}
+import {Router, router, Link, Route} from '../nezha-router/index'
 
-const PropsDemo = () => {
+import './index.scss'
 
+
+const Route1 = ({router}) => {
     return (
-        <Test msg={"hello"}>
-            <p>this is a child</p>
-        </Test>
+        <div>Route page 1</div>
     )
 }
 
-// 事件和列表渲染
-class ListDemo extends Component {
-    state = {
-        list: [0, 1, 2, 3, 4, 5]
-    }
-    addListItem = (e) => {
-        let list = this.state.list
-
-        list.push('new item:' + Math.random())
-        this.setState({list})
-    }
-
-    deleteListItem = () => {
-        let list = this.state.list
-        list.pop()
-        this.setState({list})
-    }
-    shuffle = () => {
-        let list = this.state.list
-        console.log(list)
-        list = list.sort((a, b) => Math.random() - 0.5)
-        console.log(list)
-        console.log('=======')
-        this.setState({list})
-    }
-    unshift = () => {
-        let list = this.state.list
-        list.splice(0, 0, 'new item:' + Math.random())
-        this.setState({list})
-    }
-
-    render() {
-        let list = this.state.list
-        return (
-            <div>
-                <button onClick={this.addListItem}>add Item</button>
-                <button onClick={this.deleteListItem}>delete Item</button>
-                <button onClick={this.shuffle}>shuffle Item</button>
-                <button onClick={this.unshift}>unshift item</button>
-                <ul>
-                    {
-                        list.map(item => (<li key={item}>{item}</li>))
-                    }
-                </ul>
-            </div>
-
-        )
-    }
+const Route2 = () => {
+    return (
+        <div>Route page 2</div>
+    )
 }
 
-class FlagDemo extends Component {
-    state = {
-        flag: true,
+const routes = [{
+    path: '/',
+    component: () => {
+        return (<div>Index</div>)
     }
-
-    toggle = (e) => {
-        this.setState({
-            flag: !this.state.flag
-        })
-    }
-
-    render() {
-        const {flag} = this.state
-        const vnode = flag ? ' show Flag' : null
-
-        return (
-            <div>
-                <button onClick={this.toggle}>
-                    {flag ? 'flag is yes' : 'flag is no'}
-                </button>
-
-                {vnode}
-            </div>
-        )
-    }
-}
+}, {
+    path: '/route1',
+    component: Route1,
+}, {
+    path: '/route2',
+    component: Route2
+}]
 
 class App extends Component {
-    render() {
-        return (
-            <div className="app">
-                {/*<FlagDemo/>*/}
+    togglePage1 = (e) => {
+        router.push('/route1')
+    }
+    togglePage2 = (e) => {
+        router.redirect('/route2')
+    }
 
-                <ListDemo/>
-                {/*<PropsDemo/>*/}
+    render() {
+        let {url} = this.props;
+        return (
+            <div>
+                <nav>
+                    <button onClick={this.togglePage1}>push</button>
+                    <button onClick={this.togglePage2}>redirect</button>
+
+                    <Link href="/">index</Link>
+                    <Link href="/route1">router1</Link>
+                    <Link href="/route2">router2</Link>
+                </nav>
+                <main>
+                    <Router routes={routes}/>
+                </main>
             </div>
-        )
+        );
     }
 }
 
-//
-
-let vnode = (<App/>)
-
-renderDOM(vnode, document.querySelector("#app"))
+renderDOM(<App/>, document.querySelector("#app"))
 

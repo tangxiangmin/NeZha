@@ -7,6 +7,10 @@ import commitWork from "./commit";
 let workInProgress: Fiber = null // 记录当前正在运行的fiber
 export let currentWorkRoot: Fiber = null
 
+export function getWorkInProgress() {
+    return workInProgress
+}
+
 // 从根节点开始更新fiber树
 // todo 计算节点的可使用工作时间
 // todo 在当前更新未结束之前，如果又调用了scheduleWork，需要先将其放入队列

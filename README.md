@@ -12,9 +12,14 @@ npm run dev
 ```
 
 ## Feature
-* [x] 类组件、声明周期
+* [x] 类组件
+* [ ] 声明周期
 * [x] 函数组件
 * [ ] hooks
 * [x] 事件系统
-* [ ] diff算法、key
-* [ ] Fiber Reconciler简单实现
+* [x] diff算法、key
+* [x] Fiber Reconciler简单实现
+* [ ] Router
+* [ ] Context
+* [ ] SSR
+* [ ] 集成Redux

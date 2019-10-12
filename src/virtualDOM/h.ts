@@ -2,8 +2,10 @@
  * 2019-07-31 15:04
  */
 export interface Props {
-    children?: [],
+    children?: Array<VNode>,
     nodeValue?: string,
+
+    [propName: string]: any;
 }
 
 export interface VNode {
@@ -15,10 +17,10 @@ export interface VNode {
 function h(type: Function | string, props: any, ...children: any): VNode {
     if (!props) {
         props = {}
-    }   
-    
+    }
+
     props.children = children
-    
+
     return {
         type,
         props,

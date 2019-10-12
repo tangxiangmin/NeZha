@@ -8,7 +8,7 @@ module.exports = {
         publicPath: '/'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js', '.jsx']
     },
     module: {
         rules: [
@@ -18,7 +18,7 @@ module.exports = {
                 options: {
                     sourceMap: true,
                     presets: [
-                        [require.resolve('@babel/preset-typescript'), { jsxPragma: 'h' }],
+                        [require.resolve('@babel/preset-typescript'), {jsxPragma: 'h'}],
                         [require.resolve('@babel/preset-env'), {
                             targets: {
                                 browsers: ['last 2 versions', 'IE >= 9']
@@ -30,12 +30,16 @@ module.exports = {
                     ],
                     plugins: [
                         [require.resolve('@babel/plugin-transform-runtime')],
-                        [require.resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', pragmaFrag: 'Fragment' }],
-                        [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-                        [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
+                        [require.resolve('@babel/plugin-transform-react-jsx'), {pragma: 'h', pragmaFrag: 'Fragment'}],
+                        [require.resolve('@babel/plugin-proposal-decorators'), {legacy: true}],
+                        [require.resolve('@babel/plugin-proposal-class-properties'), {loose: true}],
                     ]
                 }
             },
+            {
+                test: /\.s?css$/,
+                loader: ['style-loader', 'css-loader', 'sass-loader']
+            }
         ]
     },
     devtool: 'inline-source-map',
