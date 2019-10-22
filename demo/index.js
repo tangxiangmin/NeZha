@@ -1,65 +1,52 @@
 /**
- * 2019/10/11 下午10:00
+ * 2019/10/22 下午1:44
  */
-import {h, Component, renderDOM} from '../src/index.ts'
+import {createFiber as h} from '../src/fiber'
 
-import {Router, router, Link, Route} from '../nezha-router/index'
-
-import './index.scss'
-
-
-const Route1 = ({router}) => {
-    return (
-        <div>Route page 1</div>
-    )
-}
-
-const Route2 = () => {
-    return (
-        <div>Route page 2</div>
-    )
-}
-
-const routes = [{
-    path: '/',
-    component: () => {
-        return (<div>Index</div>)
-    }
-}, {
-    path: '/route1',
-    component: Route1,
-}, {
-    path: '/route2',
-    component: Route2
-}]
+import {renderDOM, Component} from "../src/component";
 
 class App extends Component {
-    togglePage1 = (e) => {
-        router.push('/route1')
+    state = {
+        title: 'hello nezha',
+        list: [2, 4, 5, 3, 1]
     }
-    togglePage2 = (e) => {
-        router.redirect('/route2')
+
+    changeTitle = () => {
+        this.setState({
+            title: 'hello change Title'
+        })
+    }
+    shuffle = () => {
+        let {list} = this.state
+        list.sort((a, b) => Math.random() - 0.5)
+        this.setState({
+            list: [...list]
+            // list: [1, 3, 5, 4, 2]
+        }, () => {
+        })
     }
 
     render() {
-        let {url} = this.props;
+        let {title, list} = this.state
+        let listItem = list.map(item => {
+            return (<li key={item}>{item}</li>)
+        })
+
         return (
             <div>
-                <nav>
-                    <button onClick={this.togglePage1}>push</button>
-                    <button onClick={this.togglePage2}>redirect</button>
+                <h1 onClick={this.changeTitle} title={Math.random()}>{title}</h1>
+                <p>sub</p>
+                <button onClick={this.shuffle}>forceUpdate</button>
+                <p>{list.join(',')}</p>
+                <ul>
+                    {listItem}
+                </ul>
 
-                    <Link href="/">index</Link>
-                    <Link href="/route1">router1</Link>
-                    <Link href="/route2">router2</Link>
-                </nav>
-                <main>
-                    <Router routes={routes}/>
-                </main>
             </div>
         );
     }
 }
 
-renderDOM(<App/>, document.querySelector("#app"))
-
+renderDOM(<App/>, document.querySelector("#app"), () => {
+    console.log('app init')
+})
