@@ -1,5 +1,5 @@
 import {REMOVE, INSERT, UPDATE, MOVE, Patch} from './diff'
-import {isTextNode, VNode} from './fiber'
+import {isTextNode, isComponent, VNode} from './fiber'
 
 
 // interface PatchFunc {
@@ -134,6 +134,7 @@ function setAttributes(vnode: VNode, attrs) {
 
 // 向dom元素增加属性
 function setAttribute(el, prop, val) {
+    // todo 处理className和style
     // 处理事件
     let isEvent = prop.indexOf('on') === 0
     if (isEvent) {
@@ -142,13 +143,6 @@ function setAttribute(el, prop, val) {
     } else {
         el.setAttribute(prop, val)
     }
-}
-
-// ===支持Component=== //
-
-// 根据type判断是是否为自定义组件
-function isComponent(type) {
-    return typeof type === 'function'
 }
 
 // 创建组件的DOM节点，在最后的策略中，决定让组件节点不携带任何DOM实例，及vnode.$el = null

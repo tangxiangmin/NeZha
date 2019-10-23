@@ -35,11 +35,13 @@ abstract class Component {
     static _isClassComponent = true // 判断是函数组件还是类组件
 
     shouldComponentUpdate: Function
+    props: Object
 
     _isForce = false
     nextState = null
     state = null
 
+    // todo 当前的调度器机制导致不能在render函数中调用render
     abstract render(): VNode
 
     setState(newState, cb) {

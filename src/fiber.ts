@@ -29,6 +29,10 @@ function isComponent(type: any) {
     return typeof type === 'function'
 }
 
+function isClassComponent(type){
+    return isComponent(type) && type._isClassComponent
+}
+
 function createFiber(type, props, ...children) {
     if (!props) props = {}
     let key = props.key
@@ -84,6 +88,7 @@ function bindFiber(parent: VNode, children: Array<VNode>) {
 export {
     isTextNode,
     isComponent,
+    isClassComponent,
     createFiber,
     bindFiber
 }

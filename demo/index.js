@@ -5,6 +5,31 @@ import {createFiber as h} from '../src/fiber'
 
 import {renderDOM, Component} from "../src/component";
 
+
+class SubTitle extends Component {
+    state = {
+        count: 0
+    }
+
+    render() {
+        let {title, children} = this.props
+        let {count} = this.state
+        return (
+            <div>
+                <h2>{title}</h2>
+                <p>sub title state: {count}</p>
+                {children}
+            </div>
+        )
+    }
+}
+
+function HelloFunction({msg}){
+    return (
+        <div>this is function component, props.msg = {msg}</div>
+    )
+}
+
 class App extends Component {
     state = {
         title: 'hello nezha',
@@ -32,10 +57,14 @@ class App extends Component {
             return (<li key={item}>{item}</li>)
         })
 
+        let subTitle = "title from parent" + Math.random()
         return (
             <div>
                 <h1 onClick={this.changeTitle} title={Math.random()}>{title}</h1>
-                <p>sub</p>
+                <SubTitle title={subTitle}>
+                    <p>slot from parent</p>
+                </SubTitle>
+                <HelloFunction msg={"hello function" + subTitle}></HelloFunction>
                 <button onClick={this.shuffle}>forceUpdate</button>
                 <p>{list.join(',')}</p>
                 <ul>

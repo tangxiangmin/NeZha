@@ -1,4 +1,4 @@
-import {bindFiber, isComponent, VNode} from "./fiber";
+import {bindFiber, isComponent, isClassComponent, VNode} from "./fiber";
 import {cancelWork, shouldYield, scheduleWork} from './schedule'
 
 
@@ -90,7 +90,6 @@ function performUnitWork(fiber, patches) {
         if (fiber.$sibling) return fiber.$sibling
         // 子节点和兄弟节点都遍历完毕，返回父节点，开始遍历父节点的兄弟节点，重复该过程
         fiber = fiber.$parent;
-        if (!fiber) return null
     }
 
     return null
@@ -99,11 +98,30 @@ function performUnitWork(fiber, patches) {
 // 我们保证比较的节点的type实现相同的
 function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
 
+    // todo 下面区分元素节点、函数组件节点和类组件节点的条件分支有点多，需要优化一下
     // 组件节点的子节点是在diff过程中动态生成的
     function renderComponentChildren(node: VNode) {
         let instance = node.$instance
+
+        // 将组件节点的props传递给组件实例
+        instance.props = {
+            ...node.props,
+            children: node.children // 将组件节点原本的children节点也传递给组件实例
+        }
+
         // 我们约定render函数返回的是单个节点
         let child = instance.render()
+        bindChildren(node, child)
+    }
+
+    // 渲染函数组件的节点，函数组件在不包含state，当props修改时，都将重新调用并生成新的子节点
+    function renderFunctionComponentChildren(node) {
+        let component = node.type
+        let child = component(node.props)
+        bindChildren(node, child)
+    }
+
+    function bindChildren(node, child) {
         // 为render函数中的节点更新fiber相关的属性
         node.children = bindFiber(node, [child])
         // 保存父节点的索引值，插入真实DOM节点
@@ -112,20 +130,26 @@ function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
 
     if (!oldNode) {
         // 当前节点与其子节点都将插入
-        if (isComponent(newNode.type)) {
+        if (isClassComponent(newNode.type)) {
+            // 类组件
             let component = newNode.type
             // @ts-ignore
             let instance = new component()
-            // instance.props = newNode.props
 
             instance.$vnode = newNode // 组件实例保存节点
             newNode.$instance = instance // 节点保存组件实例
             renderComponentChildren(newNode)
+        } else if (isComponent(newNode.type)) {
+            // 函数组件
+            renderFunctionComponentChildren(newNode)
         }
         patches.push({type: INSERT, newNode})
     } else {
+        let attrs = diffAttr(oldNode.props, newNode.props) // diff props
+        let isPropsChange = Object.keys(attrs).length > 0 // 判断props是否发生了变化
+
         // 更新时
-        if (isComponent(newNode.type)) {
+        if (isClassComponent(newNode.type)) {
             // 组件节点需要判断状态是否发生了变化，如果已变化，则需要对比新旧组件子节点
             let instance = oldNode.$instance
             // 更新时，复用组件实例
@@ -134,7 +158,7 @@ function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
             // 判断组件是否需要更新
             let shouldUpdate: boolean = instance.shouldComponentUpdate ? instance.shouldComponentUpdate() : true
 
-            if ((nextState && shouldUpdate) || instance._isForce) {
+            if ((nextState && shouldUpdate) || isPropsChange || instance._isForce) {
                 if (nextState) {
                     instance.state = nextState // 在此处更新组件的state
                     instance.nextState = null
@@ -144,10 +168,16 @@ function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
                 // 未进行任何修改，则直接使用之前的子节点
                 newNode.children = oldNode.children
             }
+        } else if (isComponent(newNode.type)) {
+            // 函数组件更新
+            if (isPropsChange) {
+                renderFunctionComponentChildren(newNode)
+            } else {
+                newNode.children = oldNode.children
+            }
         } else {
             // 如果存在有变化的属性，则使用新节点的属性更新旧节点
-            let attrs = diffAttr(oldNode.props, newNode.props) // 发生变化的属性
-            if (Object.keys(attrs).length > 0) {
+            if (isPropsChange) {
                 patches.push({type: UPDATE, oldNode, newNode, attrs})
             }
 
