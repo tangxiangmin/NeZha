@@ -4,7 +4,7 @@
 
 //@ts-ignore
 
-const requestIdleCallback = window.requestIdleCallback
+// const requestIdleCallback = window.requestIdleCallback
 
 type timestamp = number
 // 默认1秒30帧运行，即一个切片最多运行的时间
@@ -29,6 +29,7 @@ function scheduleWork(workLoop: Function) {
     // 注册异步任务，我们可以采用下面这两种策略来进行进行调度
 
     //requestAnimationFrame(onAnimationFrame)
+    // @ts-ignore
     requestIdleCallback(onIdleFrame)
 }
 
@@ -76,6 +77,7 @@ function onIdleFrame(deadline) {
 
     const hasMoreWork = scheduledCallback();
     if (hasMoreWork) {
+        // @ts-ignore
         requestIdleCallback(onIdleFrame, {timeout: frameLength})
     } else {
         // 如果已经执行完毕，则清空

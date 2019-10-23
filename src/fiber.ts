@@ -18,7 +18,7 @@ export interface VNode {
 }
 
 // 处理传入的字面量文本节点
-const TEXT_NODE = Symbol('__text_node')
+const TEXT_NODE = Symbol.for('__text_node')
 
 function isTextNode(type: any) {
     return type === TEXT_NODE
@@ -29,7 +29,7 @@ function isComponent(type: any) {
     return typeof type === 'function'
 }
 
-function isClassComponent(type){
+function isClassComponent(type) {
     return isComponent(type) && type._isClassComponent
 }
 

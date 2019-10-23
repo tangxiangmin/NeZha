@@ -1,5 +1,6 @@
 import {h, Component} from '../src/index'
-import {VNode} from "../src/virtualDOM/h";
+
+import {VNode} from "../src/fiber";
 
 const ROUTERS: Array<Router> = []
 
@@ -61,12 +62,17 @@ const router: RouterAPI = {
 const Route = ({path, component}: RouteConfig) => {
     let Comp: Function | Component = component
     // @ts-ignore
-    return (<Comp router={router}/>)
+    return h(Comp, {
+        router
+    })
 }
 
 // 根据routes配置生成Route
 function createRoute(config: RouteConfig) {
-    return (<Route path={config.path} component={config.component}/>)
+    return h(Route, {
+        path: config.path,
+        component: config.component
+    })
 }
 
 // Link组件
@@ -74,8 +80,12 @@ const linkHandler = (e, url) => {
     e.preventDefault()
     push(url)
 }
+
 const Link = ({href, children}) => {
-    return (<a href={href} onClick={(e) => linkHandler(e, href)}>{children}</a>)
+    return h('a', {
+        href,
+        onClick: (e) => linkHandler(e, href)
+    })
 }
 
 // Router组件
@@ -84,8 +94,8 @@ class Router extends Component {
         url: getCurrentUrl()
     }
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         ROUTERS.push(this) // 通过routers保存当前router实例
         // SSR不需要该逻辑
         if (window && window.addEventListener) {
@@ -102,15 +112,19 @@ class Router extends Component {
 
     // todo path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
     getMatchRoute() {
+        // @ts-ignore
         let routes: Array<RouteConfig> = this.props.routes || []
         let {url} = this.state
 
+
         let children: Array<VNode> = routes
             .map(createRoute)
+            // @ts-ignore
             .concat(this.props.children || [])
 
         for (let i = 0; i < children.length; ++i) {
             let child = children[i]
+            // @ts-ignore
             if (child.props.path === url) {
                 return child
             }
@@ -123,11 +137,10 @@ class Router extends Component {
     }
 }
 
-// todo 为了简化使用及迭代，部分接口应该不需要暴露给用户
 export {
     Link,
     Route,
+    Router,
     router
 }
 
-export default Router

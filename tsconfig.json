@@ -5,7 +5,7 @@
     "jsxFactory": "h",
     "baseUrl": ".",
     "target": "es2018",
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true
   }

@@ -44,7 +44,7 @@ abstract class Component {
     // todo 当前的调度器机制导致不能在render函数中调用render
     abstract render(): VNode
 
-    setState(newState, cb) {
+    setState(newState: Object, cb?: Function) {
         // 保存需要更新的状态
         let nextState = Object.assign({}, this.state, newState)
         // 判断新旧属性是否相同
