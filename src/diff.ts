@@ -1,7 +1,6 @@
 import {bindFiber, isComponent, isClassComponent, VNode} from "./fiber";
 import {cancelWork, shouldYield, scheduleWork} from './schedule'
 
-
 // 定义几种patch类型
 export enum PatchType {
     REMOVE, INSERT, UPDATE, MOVE
@@ -31,8 +30,8 @@ function diffSync(oldFiber: VNode, newFiber: VNode) {
 let currentRoot: VNode // 保存当前diff过程新的根节点，判断是否需要重置diff流程
 // 现在diff过程变成了异步的流程，因此只能在回调函数中等待
 function diff(oldFiber: VNode, newFiber: VNode, cb?: Function) {
-    // 表示前一个diff任务尚未结束，但又调用了新的diff与原来的oldFiber进行对比
-    if (currentRoot && currentRoot !== newFiber) {
+    // 表示前一个diff任务尚未结束，但又调用了新的diff
+    if (currentRoot) {
         cancelWork()
     }
     currentRoot = newFiber // 记录
@@ -95,39 +94,40 @@ function performUnitWork(fiber, patches) {
     return null
 }
 
+
+// 组件节点的子节点是在diff过程中动态生成的
+function renderComponentChildren(node: VNode) {
+    let instance = node.$instance
+
+    // 将组件节点的props传递给组件实例
+    instance.props = {
+        ...node.props,
+        children: node.children // 将组件节点原本的children节点也传递给组件实例
+    }
+
+    // 我们约定render函数返回的是单个节点
+    let child = instance.render()
+    bindChildren(node, child)
+}
+
+// 渲染函数组件的节点，函数组件在不包含state，当props修改时，都将重新调用并生成新的子节点
+function renderFunctionComponentChildren(node: VNode) {
+    let component = <Function>node.type
+
+    let child = component(node.props)
+    bindChildren(node, child)
+}
+
+function bindChildren(node, child) {
+    // 为render函数中的节点更新fiber相关的属性
+    node.children = bindFiber(node, [child])
+    // 保存父节点的索引值，插入真实DOM节点
+    child.index = node.index
+}
+
 // 我们保证比较的节点的type实现相同的
 function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
-
     // todo 下面区分元素节点、函数组件节点和类组件节点的条件分支有点多，需要优化一下
-    // 组件节点的子节点是在diff过程中动态生成的
-    function renderComponentChildren(node: VNode) {
-        let instance = node.$instance
-
-        // 将组件节点的props传递给组件实例
-        instance.props = {
-            ...node.props,
-            children: node.children // 将组件节点原本的children节点也传递给组件实例
-        }
-
-        // 我们约定render函数返回的是单个节点
-        let child = instance.render()
-        bindChildren(node, child)
-    }
-
-    // 渲染函数组件的节点，函数组件在不包含state，当props修改时，都将重新调用并生成新的子节点
-    function renderFunctionComponentChildren(node) {
-        let component = node.type
-        let child = component(node.props)
-        bindChildren(node, child)
-    }
-
-    function bindChildren(node, child) {
-        // 为render函数中的节点更新fiber相关的属性
-        node.children = bindFiber(node, [child])
-        // 保存父节点的索引值，插入真实DOM节点
-        child.index = node.index
-    }
-
     if (!oldNode) {
         // 当前节点与其子节点都将插入
         if (isClassComponent(newNode.type)) {
@@ -269,5 +269,5 @@ function diffChildren(oldChildren: Array<VNode>, newChildren: Array<VNode>, patc
 
 export {
     diff,
-    diffSync
+    diffSync,
 }

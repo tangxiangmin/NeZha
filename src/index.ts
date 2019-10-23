@@ -3,11 +3,13 @@
  */
 
 import {createFiber as h} from './fiber'
-
-import {renderDOM, Component} from "./component";
+import {Component} from "./component";
+import {renderDOM} from './renderDOM'
+import {renderHTML} from "./renderHTML";
 
 export {
     h,
     renderDOM,
-    Component
+    renderHTML,
+    Component,
 }

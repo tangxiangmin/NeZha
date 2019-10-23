@@ -1,47 +1,23 @@
-import {doPatch} from './patch'
-import {diffSync, diff} from "./diff";
 import {VNode} from "./fiber";
 
-let appRoot
+import {diffRoot} from "./reconciler";
 
-// 实现一个浅比较
-function shallowCompare(a, b) {
-    if (Object.is(a, b)) return true
-    const keysA = Object.keys(a)
-    const keysB = Object.keys(b)
-
-    if (keysA.length !== keysB.length) return false
-
-    const hasOwn = Object.prototype.hasOwnProperty
-    for (let i = 0; i < keysA.length; i++) {
-        if (!hasOwn.call(b, keysA[i]) ||
-            !Object.is(a[keysA[i]], b[keysA[i]])) {
-            return false
-        }
-    }
-    return true
-}
-
-
-function diffRoot(cb) {
-    // 从根节点开始进行diff，当遇见Component时，需要使用新的props和props更新节点
-    diff(appRoot, appRoot, (patches) => {
-        doPatch(patches)
-        cb && cb()
-    })
-}
+import {shallowCompare} from './util'
 
 abstract class Component {
     static _isClassComponent = true // 判断是函数组件还是类组件
-
-    shouldComponentUpdate: Function
     props: Object
 
     _isForce = false
     nextState = null
     state = null
 
-    // todo 当前的调度器机制导致不能在render函数中调用render
+    // 一些生命周期方法
+    shouldComponentUpdate: Function
+    componentDidMounted: Function
+    componentDidUpdate: Function
+
+    // todo 当前的调度器机制导致不能在render函数中调用setState
     abstract render(): VNode
 
     setState(newState: Object, cb?: Function) {
@@ -65,23 +41,7 @@ abstract class Component {
     }
 }
 
-// 将根组件节点渲染到页面上
-function renderDOM(root, dom, cb) {
-    // 整个应用的根节点
-    root.$parent = {
-        $el: dom
-    }
-    if (!appRoot) {
-        appRoot = root // 保存整个应用根节点的引用
-    }
-    // 初始化时直接使用同步diff
-    let patches = diffSync(null, root)
-    doPatch(patches)
-    cb && cb()
-}
-
 
 export {
     Component,
-    renderDOM
 }

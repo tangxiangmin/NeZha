@@ -2,13 +2,16 @@
  * 2019-07-31 16:55
  */
 
-export const isStr = function (a: any) {
+export const isStr = function (a: any): boolean {
     return typeof a === 'string'
 }
-export const isFunc = function (a: any) {
+export const isFunc = function (a: any): boolean {
     return typeof a === 'function'
 }
 
+export const isEventProp = function (prop: string): boolean {
+    return prop.indexOf('on') === 0
+}
 
 export const flattenArray = function (arr: Array<any>) {
     let ans = []
@@ -20,4 +23,22 @@ export const flattenArray = function (arr: Array<any>) {
         }
     }
     return ans
+}
+
+// 实现一个浅比较
+export function shallowCompare(a, b): Boolean {
+    if (Object.is(a, b)) return true
+    const keysA = Object.keys(a)
+    const keysB = Object.keys(b)
+
+    if (keysA.length !== keysB.length) return false
+
+    const hasOwn = Object.prototype.hasOwnProperty
+    for (let i = 0; i < keysA.length; i++) {
+        if (!hasOwn.call(b, keysA[i]) ||
+            !Object.is(a[keysA[i]], b[keysA[i]])) {
+            return false
+        }
+    }
+    return true
 }

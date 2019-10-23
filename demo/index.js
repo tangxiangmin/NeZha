@@ -1,10 +1,8 @@
 /**
  * 2019/10/22 下午1:44
  */
-import {createFiber as h} from '../src/fiber'
 
-import {renderDOM, Component} from "../src/component";
-
+import {h, renderDOM, Component, renderHTML} from '../src/index'
 
 class SubTitle extends Component {
     state = {
@@ -15,7 +13,7 @@ class SubTitle extends Component {
         let {title, children} = this.props
         let {count} = this.state
         return (
-            <div>
+            <div className="subtitle">
                 <h2>{title}</h2>
                 <p>sub title state: {count}</p>
                 {children}
@@ -24,7 +22,7 @@ class SubTitle extends Component {
     }
 }
 
-function HelloFunction({msg}){
+function HelloFunction({msg}) {
     return (
         <div>this is function component, props.msg = {msg}</div>
     )
@@ -76,6 +74,11 @@ class App extends Component {
     }
 }
 
-renderDOM(<App/>, document.querySelector("#app"), () => {
+let root = <App/>
+
+// let html = renderHTML(root)
+// app.innerHTML = html
+
+renderDOM(root, document.querySelector("#app"), () => {
     console.log('app init')
 })

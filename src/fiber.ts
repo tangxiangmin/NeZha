@@ -17,6 +17,7 @@ export interface VNode {
     oldFiber?: VNode
 }
 
+// todo 当特殊类型的节点较多时，难免需要增加多种判断条件，我们可以在VNode上扩展一个tag属性来处理这个问题
 // 处理传入的字面量文本节点
 const TEXT_NODE = Symbol.for('__text_node')
 
