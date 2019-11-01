@@ -134,7 +134,7 @@ function diffFiber(oldNode: VNode, newNode: VNode, patches: Patch[]) {
             // 类组件
             let component = newNode.type
             // @ts-ignore
-            let instance = new component()
+            let instance = new component(newNode.props)
 
             instance.$vnode = newNode // 组件实例保存节点
             newNode.$instance = instance // 节点保存组件实例

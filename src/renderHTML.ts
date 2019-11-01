@@ -19,7 +19,6 @@ function VNode2HTML(root: VNode): string {
 
     let el = '' // 当前节点渲染的html片段
     if (isComponent(type)) {
-        console.log(children)
         el += sub // 组件节点不渲染任何文本
     } else if (isTextNode(type)) {
         // @ts-ignore

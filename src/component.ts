@@ -12,6 +12,10 @@ abstract class Component {
     nextState = null
     state = null
 
+    constructor(props) {
+        this.props = props
+    }
+
     // 一些生命周期方法
     shouldComponentUpdate: Function
     componentDidMounted: Function

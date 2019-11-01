@@ -3,7 +3,7 @@
  */
 import {h, Component, renderDOM} from '../src/index.ts'
 
-import {Router, router, Link, Route} from '../nezha-router/index'
+import {Router, router, Link, Route} from '../router/index'
 
 import './index.scss'
 

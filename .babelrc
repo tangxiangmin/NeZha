@@ -1,0 +1,47 @@
+{
+  "presets": [
+    [
+      "@babel/preset-typescript",
+      {
+        "jsxPragma": "h"
+      }
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "IE >= 9"
+          ]
+        },
+        "modules": false,
+        "loose": true
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "dynamic-import-node",
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "h",
+        "pragmaFrag": "Fragment"
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
+  ]
+}

@@ -90,15 +90,17 @@ const Link = ({href, children}) => {
 
 // Router组件
 class Router extends Component {
-    state = {
-        url: getCurrentUrl()
-    }
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.state = {
+            url: props.url || getCurrentUrl()
+        }
+
         ROUTERS.push(this) // 通过routers保存当前router实例
         // SSR不需要该逻辑
-        if (window && window.addEventListener) {
+        // TODO，新增abstract路由机制
+        if (typeof window !== 'undefined' && window.addEventListener) {
             window.removeEventListener('popstate', onpopstate)
             window.addEventListener('popstate', onpopstate)
         }
@@ -111,11 +113,11 @@ class Router extends Component {
     }
 
     // todo path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
+    // todo 实现404页面
     getMatchRoute() {
         // @ts-ignore
         let routes: Array<RouteConfig> = this.props.routes || []
         let {url} = this.state
-
 
         let children: Array<VNode> = routes
             .map(createRoute)
