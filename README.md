@@ -15,6 +15,12 @@ Nezha
 ```
 # 开发模式
 npm run dev
+
+# ssr demo演示
+npm run ssr
+
+# 打包
+npm run build
 ```
 
 ## Feature

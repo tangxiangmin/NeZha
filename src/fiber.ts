@@ -65,6 +65,7 @@ function createFiber(type, props, ...children) {
         }
         return child
     })
+    props.children = children
 
     vnode.children = bindFiber(vnode, children)
     return vnode

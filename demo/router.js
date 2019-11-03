@@ -8,7 +8,8 @@ import {Router, router, Link, Route} from '../router/index'
 import './index.scss'
 
 
-const Route1 = ({router}) => {
+const Route1 = ({router, location}) => {
+    console.log(location)
     return (
         <div>Route page 1</div>
     )
@@ -18,6 +19,10 @@ const Route2 = () => {
     return (
         <div>Route page 2</div>
     )
+}
+
+const Route3 = ({router, location})=>{
+
 }
 
 const routes = [{
@@ -31,6 +36,9 @@ const routes = [{
 }, {
     path: '/route2',
     component: Route2
+}, {
+    path: '/route3/:id',
+    component: Route3
 }]
 
 class App extends Component {
@@ -50,7 +58,7 @@ class App extends Component {
                     <button onClick={this.togglePage2}>redirect</button>
 
                     <Link href="/">index</Link>
-                    <Link href="/route1">router1</Link>
+                    <Link href="/route1?a=1">router1</Link>
                     <Link href="/route2">router2</Link>
                 </nav>
                 <main>

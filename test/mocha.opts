@@ -1,6 +1,8 @@
 --require ts-node/register
+--require @babel/register
 --require source-map-support/register
 --recursive
 --full-trace
 --bail
 test/**/*.spec.ts
+test/**/*.spec.tsx

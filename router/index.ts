@@ -1,4 +1,7 @@
-import {Router, router, Link, Route} from "./router";
+import * as router from './history'
+import Router from './Router'
+import Route from './Route'
+import Link from './Link'
 
 export {
     Router,
