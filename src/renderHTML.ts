@@ -5,7 +5,7 @@
 import {isComponent, isTextNode, VNode} from "./fiber";
 
 import {diffSync} from './diff'
-import {isEventProp} from "./util";
+import {isEventProp, isFilterProp} from "./util";
 
 // 在ssr中，我们需要的不是DOM节点，而是HTML字符串，
 
@@ -34,7 +34,8 @@ function VNode2HTML(root: VNode): string {
     return el
 
     function getAttr(prop, val) {
-        // 渲染HTML，我们不需要 事件 等props
+        if (isFilterProp(prop)) return ''
+        // 渲染HTML，我们不需要 事件 等props，而是在hydrate阶段重新设置属性
         return isEventProp(prop) ? '' : ` ${prop}="${val}"`
     }
 }

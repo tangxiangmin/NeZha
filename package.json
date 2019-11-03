@@ -15,9 +15,10 @@
   "homepage": "https://github.com/tangxiangmin/NeZha#readme",
   "description": "a little react",
   "scripts": {
-    "dev": "webpack-dev-server --inline",
+    "dev": "webpack-dev-server --inline --config webpack.dev.js --mode development",
     "build": "tsc src/index.ts --outDir dist",
-    "ssr": "ts-node ssr/server-entry.ts",
+    "dev:ssr": "ts-node ssr/entry.ts",
+    "build:ssr": "webpack --config webpack.ssr.js --mode production",
     "test": "mocha"
   },
   "devDependencies": {

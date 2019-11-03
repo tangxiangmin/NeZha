@@ -1,5 +1,5 @@
 import {isComponent, isTextNode, VNode} from "./fiber";
-import {isEventProp} from "./util";
+import {isEventProp, isFilterProp} from "./util";
 import {diffSync} from "./diff";
 import {doPatch} from "./patch";
 
@@ -30,9 +30,8 @@ function findLatestChildDOM(node: VNode) {
 
 // 向dom元素增加属性
 function setAttribute(el, prop, val) {
-    if (prop === 'className') {
-        prop = 'class'
-    }
+    if (isFilterProp(prop)) return
+    if (prop === 'className') prop = 'class'
 
     if (isEventProp(prop)) {
         let eventName = prop.slice(2).toLowerCase()
@@ -94,7 +93,7 @@ function createComponent(node) {
 }
 
 // 将根组件节点渲染到页面上
-function renderDOM(root, dom, cb) {
+function renderDOM(root, dom, cb?: Function) {
     // 整个应用的根节点
     root.$parent = {
         $el: dom

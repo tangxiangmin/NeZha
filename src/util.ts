@@ -2,15 +2,21 @@
  * 2019-07-31 16:55
  */
 
-export const isStr = function (a: any): boolean {
+export function isStr(a: any): boolean {
     return typeof a === 'string'
 }
-export const isFunc = function (a: any): boolean {
+
+export function isFunc(a: any): boolean {
     return typeof a === 'function'
 }
 
-export const isEventProp = function (prop: string): boolean {
+export function isEventProp(prop: string): boolean {
     return prop.indexOf('on') === 0
+}
+
+export function isFilterProp(prop: string): boolean {
+    let blackList = ['key', 'children']
+    return blackList.includes(prop)
 }
 
 export const flattenArray = function (arr: Array<any>) {
