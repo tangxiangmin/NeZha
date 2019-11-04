@@ -2,7 +2,7 @@ import {Component} from "../src";
 import {VNode} from "../src/fiber";
 
 import {getCurrentUrl} from './history'
-import {createRoute} from "./Route";
+import {createRoute, RouteConfig} from "./Route";
 import {createLocation} from "./location";
 
 const ROUTERS: Array<Router> = []
@@ -19,6 +19,13 @@ export function routeTo(url: string) {
     })
 }
 
+// 找到第一个符合条件的route
+export function getMatchRouteConfig(url: string, routes: Array<RouteConfig>): RouteConfig {
+    let location = createLocation(url)
+    let matches = routes.filter((route) => !route.path || route.path === location.path)
+    return matches[0]
+}
+
 class Router extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +33,7 @@ class Router extends Component {
         let location = createLocation(url)
 
         this.state = {
+            url,
             location,
         }
 
@@ -41,6 +49,7 @@ class Router extends Component {
     route(url) {
         let location = createLocation(url)
         this.setState({
+            url,
             location
         })
     }
@@ -50,23 +59,10 @@ class Router extends Component {
     getMatchRoute() {
         // @ts-ignore
         let routes: Array<RouteConfig> = this.props.routes || []
-        let location = this.state.location
+        let {location, url} = this.state
+        let config = getMatchRouteConfig(url, routes)
 
-        let children: Array<VNode> = routes
-            .map((config) => {
-                return createRoute(config, location)
-            })
-            // @ts-ignore
-            .concat(this.props.children || [])
-
-        for (let i = 0; i < children.length; ++i) {
-            let child = children[i]
-            // @ts-ignore
-            if (child.props.path === location.path) {
-                return child
-            }
-        }
-        return null
+        return config ? createRoute(config, location) : null
     }
 
     render() {

@@ -2,19 +2,13 @@
  * 2019/11/1 下午9:11
  * 一份前后台共用的路由配置，
  */
-import {h} from '../src'
+import {Component, h} from '../src'
+import {RouteConfig} from "../router/Route";
 
-// TODO 实现初始化时服务端的数据请求，以及数据的埋入与同步
-// TODO 实现404页面
-const Home = () => {
-    return (<div>Hello Home</div>)
-}
 
-const About = () => {
-    return (<div>Hello About</div>)
-}
+import {Home, About, List} from "./pages";
 
-const routes = [
+const routes: Array<RouteConfig> = [
     {
         path: '/',
         component: Home
@@ -22,6 +16,10 @@ const routes = [
     {
         path: '/about',
         component: About
+    },
+    {
+        path: '/list',
+        component: List
     },
     {
         component: () => {

@@ -65,6 +65,7 @@ function performUnitWork(fiber, patches) {
     let oldFiber = fiber.oldFiber
     let oldChildren = oldFiber && oldFiber.children || []
 
+    appendContext(fiber.$parent, fiber)
     // 任务一：对比当前新旧节点，收集变化
     diffFiber(oldFiber, fiber, patches)
     // 任务二：为新节点中children的每个元素找到需要对比的旧节点，设置oldFiber属性，方便下个循环继续执行performUnitWork
@@ -265,6 +266,15 @@ function diffChildren(oldChildren: Array<VNode>, newChildren: Array<VNode>, patc
             patches.push({type: REMOVE, oldNode: old,})
         })
     })
+}
+
+
+// 一种处理Context数据透传的方式，采取的策略为：如果为某个组件注册了名为context的prop，则其所有子节点都可以访问到该context
+// 这里并没有采取深拷贝，根据约定，我们不应该修改context上的任何属性
+function appendContext(parent, child) {
+    if (parent && parent.props && parent.props.context) {
+        child.props.context = Object.assign(child.props.context || {}, parent.props.context)
+    }
 }
 
 export {

@@ -1,7 +1,7 @@
 // 将url解析成location对象
 export interface NeZhaLocation {
     path: string,
-    query: Object
+    query: Object,
 }
 
 // 将a=1&b=2&c=3形式的search参数解析为{a:1,b:2,c:3}形式的query对象

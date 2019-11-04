@@ -6,7 +6,7 @@ import {shallowCompare} from './util'
 
 abstract class Component {
     static _isClassComponent = true // 判断是函数组件还是类组件
-    props: Object
+    props: any
 
     _isForce = false
     nextState = null

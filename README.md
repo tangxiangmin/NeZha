@@ -17,7 +17,8 @@ Nezha
 npm run dev
 
 # ssr demo演示
-npm run ssr
+npm run dev:ssr
+npm run build:ssr
 
 # 打包
 npm run build
@@ -28,6 +29,7 @@ npm run build
 * 虚拟DOM
     * [x] Fiber Reconciler简单实现
     * [x] diff、key
+    * [x] SSR
 * 组件
     * [x] 类组件
     * [x] 函数组件

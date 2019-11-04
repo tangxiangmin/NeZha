@@ -3,8 +3,8 @@ import {Component, h} from "../src";
 import * as router from "./history";
 import {NeZhaLocation} from "./location";
 
-interface RouteConfig {
-    path: string,
+export interface RouteConfig {
+    path?: string,
     component: Function | Component,
     location?: NeZhaLocation
 }

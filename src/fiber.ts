@@ -1,5 +1,14 @@
 import {Component} from "./component";
-import {flattenArray} from "./util";
+import {flattenArray, isStr} from "./util";
+
+// 根据组件的tag区分不同类型的节点，方便扩展一些内部组件
+export enum FiberTag {
+    Text,
+    Element,
+    FunctionComponent,
+    ClassComponent,
+    ContextProvider
+}
 
 export interface VNode {
     type: Function | string,
@@ -34,7 +43,20 @@ function isClassComponent(type) {
     return isComponent(type) && type._isClassComponent
 }
 
-function createFiber(type, props, ...children) {
+// todo 后面可能需要根据tag来细分不同类型的节点功能，如Context、Suspense等
+function getFiberTag(type: any): FiberTag {
+    if (!type) {
+        return FiberTag.Text
+    } else if (isStr(type)) {
+        return FiberTag.Element
+    } else if (isClassComponent(type)) {
+        return FiberTag.ClassComponent
+    } else if (isComponent(type)) {
+        return FiberTag.FunctionComponent
+    }
+}
+
+function createFiber(type: any, props, ...children) {
     if (!props) props = {}
     let key = props.key
     delete props.key
@@ -49,7 +71,8 @@ function createFiber(type, props, ...children) {
 
         $parent: null,
         $child: null,
-        $sibling: null
+        $sibling: null,
+        // tag: getFiberTag(type),
     }
 
     children = flattenArray(children).map((child, index) => {

@@ -7,7 +7,7 @@ import {h} from '../src'
 import {Router} from '../router'
 import routes from './routes'
 
-const App = ({url = ''}) => {
+const App = ({url = '', context}) => {
     return (
         <div>
             <h1>Hello SSR</h1>
