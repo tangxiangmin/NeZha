@@ -5,9 +5,9 @@ const path = require('path');
 
 module.exports = {
     context: __dirname,
-    entry: './ssr/client.tsx',
+    entry: './demo/ssr/client.tsx',
     output: {
-        path: path.resolve(__dirname, './ssr/dist/'),
+        path: path.resolve(__dirname, './demo/ssr/dist/'),
         publicPath: '/'
     },
     resolve: {

@@ -2,14 +2,14 @@
  * 2019/11/1 下午9:11
  * 服务器应用，响应浏览器请求，根据url渲染对应页面组件，然后返回
  */
-import {getMatchRouteConfig} from "../router/Router";
+import {getMatchRouteConfig} from "../../router/Router";
 
 const express = require('express')
 const path = require('path')
 const app = express();
 
 import App from './app'
-import {Component, h, renderHTML} from '../src'
+import {Component, h, renderHTML} from '../../src'
 import routes from "./routes";
 import {createStore} from "./store";
 

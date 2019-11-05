@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     context: __dirname,
-    entry: './demo/router.js',
+    entry: './demo/context.js',
     output: {
         publicPath: '/'
     },

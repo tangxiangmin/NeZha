@@ -1,6 +1,7 @@
 import {REMOVE, INSERT, UPDATE, MOVE, Patch} from './diff'
-import {VNode} from './fiber'
+import {isClassComponent, VNode} from './fiber'
 import {createDOM, removeDOM, setAttributes, insertDOM} from './renderDOM'
+import {isFunc} from "./util";
 
 // 特定类型的变化，需要重新生成DOM节点，由于无法完全保证patches的顺序，因此在此步骤生成vnode.$el
 const beforeCommit = {
@@ -15,22 +16,33 @@ const beforeCommit = {
 // 执行此步骤时所有vnode.$el都已准备就绪
 const commit = {
     [REMOVE](oldNode: VNode, newNode: VNode) {
+        // 调用willUnmount钩子
+        if (isClassComponent(oldNode.type) && isFunc(oldNode.$instance.componentWillUnmount)) {
+            oldNode.$instance.componentWillUnmount()
+        }
         removeDOM(oldNode)
     },
     [UPDATE](oldNode: VNode, newNode: VNode, attrs: Object) {
         // 只需要更更新diff阶段收集到的需要变化的属性
         setAttributes(newNode, attrs)
-        // 将newNode移动到新的位置，问题在于前面的节点移动后，会影响后面节点的顺序
+        // 调用updated钩子函数
+        if (isClassComponent(newNode.type) && isFunc(newNode.$instance.componentDidUpdate)) {
+            newNode.$instance.componentDidUpdate()
+        }
     },
     [INSERT](oldNode: VNode, newNode: VNode) {
         // 新插入的节点上添加属性
         setAttributes(newNode, newNode.props)
         insertDOM(newNode)
+        // 调用mounted钩子函数
+        if (isClassComponent(newNode.type) && isFunc(newNode.$instance.componentDidMount)) {
+            newNode.$instance.componentDidMount()
+        }
     },
 }
 
 // 对于需要MOVE元素，我们先找到对应的父节点，然后移动该父节点下的所有子节点
-// TODO 这一步是可以优化的，避免不必要的move操作，尽管当前操作已经比较直观
+// TODO 这一步是可以优化的，避免不必要的move操作，尽管当前操作比较直观
 function doMovePatches(patches: Patch[]) {
     let movePatches = patches
         .filter(patch => patch.type === MOVE)

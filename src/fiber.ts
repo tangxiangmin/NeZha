@@ -15,7 +15,9 @@ export interface VNode {
     $el: any, // DOM实例
     $instance?: Component, // 组件实例
     key?: string | number,
-    props: Object,
+    props: {
+        [propName: string]: any;
+    },
     index: number, // 在父节点中的索引值顺序
     children: Array<VNode>,
 

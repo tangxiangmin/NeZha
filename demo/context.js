@@ -10,6 +10,11 @@ const Title = ({context}) => {
 }
 
 class App extends Component {
+
+    componentDidMount() {
+        console.log(123)
+    }
+
     render() {
         let {context} = this.props
         return (
@@ -27,4 +32,6 @@ let globalContext = {
         console.log('hello from globalContext')
     }
 }
-renderDOM(<App context={globalContext}/>, document.querySelector("#app"))
+let root = <App context={globalContext}/>
+console.log(root)
+renderDOM(root, document.querySelector("#app"))

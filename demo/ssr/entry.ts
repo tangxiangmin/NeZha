@@ -3,4 +3,4 @@
  */
 
 require("@babel/register")();
-require("./server.tsx");
+require("./server");

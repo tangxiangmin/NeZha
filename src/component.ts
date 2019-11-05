@@ -6,9 +6,9 @@ import {shallowCompare} from './util'
 
 abstract class Component {
     static _isClassComponent = true // 判断是函数组件还是类组件
-    props: any
-
     _isForce = false
+
+    props: any
     nextState = null
     state = null
 
@@ -17,9 +17,18 @@ abstract class Component {
     }
 
     // 一些生命周期方法
-    shouldComponentUpdate: Function
-    componentDidMounted: Function
-    componentDidUpdate: Function
+    shouldComponentUpdate() {
+        return true
+    }
+
+    componentWillUnmount() {
+    }
+
+    componentDidMount() {
+    }
+
+    componentDidUpdate() {
+    }
 
     // todo 当前的调度器机制导致不能在render函数中调用setState
     abstract render(): VNode
@@ -44,7 +53,6 @@ abstract class Component {
         })
     }
 }
-
 
 export {
     Component,

@@ -8,7 +8,7 @@ const linkHandler = (e, url) => {
     push(url)
 }
 
-const Link = ({href, children}) => {
+const Link = ({href, children = []}) => {
     return h('a', {
         href,
         onClick: (e) => linkHandler(e, href)
