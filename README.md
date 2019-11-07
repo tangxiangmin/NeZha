@@ -6,10 +6,11 @@ Nezha
 实现一个迷你的类React库，用作记录学习React源码时的一些理解
 
 相关知识整理
+* [实现一个简易的React](https://www.shymean.com/article/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%9A%84React)
 * [VNode与递归diff](https://www.shymean.com/article/VNode%E4%B8%8E%E9%80%92%E5%BD%92diff)
 * [Fiber与循环diff](https://www.shymean.com/article/Fiber%E4%B8%8E%E5%BE%AA%E7%8E%AFdiff)
 * [VNode与Component](https://www.shymean.com/article/VNode%E4%B8%8EComponent)
-* [实现一个简易的React](https://www.shymean.com/article/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%9A%84React)
+* [理解数据状态管理](https://www.shymean.com/article/%E7%90%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86)
 
 ## Step
 ```
@@ -37,8 +38,10 @@ npm run build
     * [x] 路由组件
     * [ ] hooks
     * [ ] refs
-    * [ ] Context
-    * [ ] 集成Redux
+    * [x] Context
+* 状态管理
+    * [x] Nax
+    * [x] 中间件
 
 
 

@@ -1,4 +1,4 @@
-import * as Redux from 'redux'
+import * as Nax from '../../nax'
 
 // 在服务端需要保证每个请求返回的都是不同的store
 export function createStore(initState = {}) {
@@ -16,5 +16,5 @@ export function createStore(initState = {}) {
         }
     }
 
-    return Redux.createStore(reducer, initState);
+    return Nax.createStore(reducer, initState);
 }
