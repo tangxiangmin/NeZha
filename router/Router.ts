@@ -1,3 +1,4 @@
+import * as pathToRegexp from 'path-to-regexp'
 import {Component} from "../src";
 import {VNode} from "../src/fiber";
 
@@ -19,22 +20,33 @@ export function routeTo(url: string) {
     })
 }
 
+
+// 根据path判断当前页面路径url是否匹配
+// path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
+function match(path: string, url: string): boolean {
+    const keys = []
+    const regexp = pathToRegexp(path, keys, {endsWith: "?"})
+    return regexp.test(url)
+}
+
 // 找到第一个符合条件的route
 export function getMatchRouteConfig(url: string, routes: Array<RouteConfig>): RouteConfig {
-    let location = createLocation(url)
-    let matches = routes.filter((route) => !route.path || route.path === location.path)
-    return matches[0]
+    for (let route of routes) {
+        // 不配置任何path，作为通用匹配
+        if (!route.path || route.path === url || match(route.path, url)) return route
+    }
 }
 
 class Router extends Component {
+    from: VNode
+    to: VNode
+
     constructor(props) {
         super(props);
         let url = props.url || getCurrentUrl()
-        let location = createLocation(url)
 
         this.state = {
             url,
-            location,
         }
 
         ROUTERS.push(this) // 通过routers保存当前router实例
@@ -47,26 +59,33 @@ class Router extends Component {
     }
 
     route(url) {
-        let location = createLocation(url)
+        // 保留旧的节点
+        this.from = this.to
+        // todo setState回调函数可能不被执行，需要的diff方法中进行处理
         this.setState({
             url,
-            location
+        }, () => {
+            let {onChange} = this.props
+
+            // from和to对应路由切换前后的Route组件，需要通过$child获取对应的页面组件节点
+            let from = this.from && this.from.$child
+            let to = this.to && this.to.$child
+            onChange && onChange(from, to)
         })
     }
 
-    // todo path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
-    // todo 实现404页面
     getMatchRoute() {
-        // @ts-ignore
+        let {url} = this.state
         let routes: Array<RouteConfig> = this.props.routes || []
-        let {location, url} = this.state
         let config = getMatchRouteConfig(url, routes)
-
+        // 根据url找到route配置，根据route及url生成location对象
+        let location = createLocation(url, config.path)
         return config ? createRoute(config, location) : null
     }
 
     render() {
-        return this.getMatchRoute()
+        this.to = this.getMatchRoute()
+        return this.to
     }
 }
 

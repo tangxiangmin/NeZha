@@ -58,7 +58,7 @@ function getFiberTag(type: any): FiberTag {
     }
 }
 
-function createFiber(type: any, props, ...children) {
+function createFiber(type: any, props: any, ...children) {
     if (!props) props = {}
     let key = props.key
     delete props.key
@@ -77,7 +77,9 @@ function createFiber(type: any, props, ...children) {
         // tag: getFiberTag(type),
     }
 
-    children = flattenArray(children).map((child, index) => {
+    children = flattenArray(children).filter(child => {
+        return child !== undefined && child !== null
+    }).map((child, index) => {
         if (!child.type) {
             // 处理文本节点
             child = {

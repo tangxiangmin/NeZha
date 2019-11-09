@@ -26,7 +26,11 @@ function VNode2HTML(root: VNode): string {
     } else {
         let attrs = ''
         for (let key in props) {
-            attrs += getAttr(key, props[key])
+            if (key === 'dangerouslyInnerHTML') {
+                sub += props[key]
+            } else {
+                attrs += getAttr(key, props[key])
+            }
         }
         el += `<${type}${attrs}>${sub}</${type}>` // 将子节点插入当前节点
     }

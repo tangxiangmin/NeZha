@@ -1,7 +1,10 @@
+import * as pathToRegexp from 'path-to-regexp'
+
 // 将url解析成location对象
 export interface NeZhaLocation {
     path: string,
     query: Object,
+    params?: Object, // 类似/:id/:foo路径上的参数
 }
 
 // 将a=1&b=2&c=3形式的search参数解析为{a:1,b:2,c:3}形式的query对象
@@ -15,10 +18,29 @@ export function parseQuery(search: string): Object {
     return query;
 }
 
-export function createLocation(url: string): NeZhaLocation {
+// 解析链接上/id/:id类型的参数为{id:xxx}
+function parseParam(url: string, path: string): Object {
+    const keys = []
+    const regexp = pathToRegexp(path, keys, {endsWith: "?"})
+    const params = {}
+    if (regexp.test(url)) {
+        url.replace(regexp, (...args) => {
+            let idx = 1
+            keys.forEach(key => {
+                params[key.name] = args[idx++]
+            })
+            return ''
+        })
+    }
+    return params
+}
+
+export function createLocation(url: string, path?: string): NeZhaLocation {
     let arr = url.split('?')
+    let pathName = arr[0]
     return {
-        path: arr[0],
+        path: pathName,
+        params: parseParam(pathName, path),
         query: parseQuery(arr[1] || '')
     }
 }

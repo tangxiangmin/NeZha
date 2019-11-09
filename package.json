@@ -16,17 +16,10 @@
   "description": "a little react",
   "scripts": {
     "dev": "webpack-dev-server --inline --config webpack.dev.js --mode development",
-    "build": "tsc src/index.ts --outDir dist",
+    "build": "tsc index.ts --outDir dist --declaration true && npm pack",
     "dev:ssr": "concurrently 'webpack --config webpack.ssr.js --watch --mode development' 'nodemon --watch \"./demo/ssr/**/*\" -e ts,tsx --exec ts-node ./demo/ssr/entry.ts'",
-    "build:ssr": "webpack --config webpack.ssr.js --mode production",
     "test": "mocha"
   },
-  "files": [
-    "src/*",
-    "router/*",
-    "README.md",
-    "package.json"
-  ],
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.55",
@@ -60,5 +53,7 @@
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "path-to-regexp": "^3.1.0"
+  }
 }

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
+    "declaration": true,
     "jsx": "react",
     "jsxFactory": "h",
     "baseUrl": ".",

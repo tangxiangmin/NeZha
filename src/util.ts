@@ -15,7 +15,7 @@ export function isEventProp(prop: string): boolean {
 }
 
 export function isFilterProp(prop: string): boolean {
-    let blackList = ['key', 'children']
+    let blackList = ['key', 'children', 'context', 'dangerouslyInnerHTML']
     return blackList.includes(prop)
 }
 

@@ -30,6 +30,9 @@ function findLatestChildDOM(node: VNode) {
 
 // 向dom元素增加属性
 function setAttribute(el, prop, val) {
+    if (prop === 'dangerouslyInnerHTML') {
+        el.innerHTML = val
+    }
     if (isFilterProp(prop)) return
     if (prop === 'className') prop = 'class'
 
@@ -74,7 +77,8 @@ function removeDOM(oldNode: VNode) {
 // 设置DOM节点属性
 function setAttributes(vnode: VNode, attrs) {
     if (isComponent(vnode.type)) {
-
+        // 如果是在组件节点上设置属性，则将其属性设置到其元素子节点上
+        setAttributes(vnode.$child, attrs)
     } else if (isTextNode(vnode.type)) {
         // @ts-ignore
         vnode.$el.nodeValue = vnode.props.nodeValue

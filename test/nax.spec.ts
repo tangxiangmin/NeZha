@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware} from "../nax";
+import {createStore, applyMiddleware, combineReducers} from "../nax";
 import {assert} from "chai";
 
 
@@ -65,11 +65,13 @@ describe('nax', () => {
 
         it('createStoreWithMiddleware', () => {
             let arr = []
+
             function m1(next, action, {getState}) {
                 arr.push(1)
                 next()
                 arr.push(2)
             }
+
             function m2(next, action, {getState}) {
                 arr.push(3)
                 next()
@@ -79,6 +81,55 @@ describe('nax', () => {
             let createStoreWithMiddleware = applyMiddleware([m1, m2])(createStore)
             let store = createStoreWithMiddleware(reducer)
             store.dispatch({type: 'ADD_ITEM', payload: 3})
+            assert.deepEqual(arr, [1, 3, 4, 2])
+        })
+    })
+
+    context('combineReducers', () => {
+
+        let reducers = {
+            home: (state, action) => {
+                state = state || {
+                    list: [1, 2]
+                }
+                switch (action.type) {
+                    case 'query_list':
+                        //...
+                        return {
+                            list: [1, 3]
+                        }
+                }
+                return state
+            },
+            tags: (state, action) => {
+                state = state || {
+                    tags: [1, 2]
+                }
+
+                switch (action.type) {
+                    case 'query_tag':
+                        //...
+                        return {}
+                }
+                return state
+            }
+        }
+
+        it('getState should return combineState', () => {
+            let reducer = combineReducers(reducers)
+            let store = createStore(reducer)
+            let state = store.getState()
+            assert.deepEqual(state, {
+                home: {list: [1, 2]},
+                tags: {tags: [1, 2]},
+            })
+            store.dispatch({
+                type: 'query_list',
+            })
+
+            assert.deepEqual(store.getState().home, {
+                list: [1, 3]
+            })
         })
     })
 })
