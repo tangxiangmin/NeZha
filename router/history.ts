@@ -10,12 +10,14 @@ export function getCurrentUrl() {
 
 // 加载新的url
 export function push(url: string) {
+    if (url === getCurrentUrl()) return
     history.pushState(null, null, url)
     routeTo(url)
 }
 
 // 重定向到新的url
 export function redirect(url: string) {
+    if (url === getCurrentUrl()) return
     history.replaceState(null, null, url)
     routeTo(url)
 }

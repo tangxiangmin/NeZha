@@ -21,17 +21,20 @@ export function parseQuery(search: string): Object {
 // 解析链接上/id/:id类型的参数为{id:xxx}
 function parseParam(url: string, path: string): Object {
     const keys = []
-    const regexp = pathToRegexp(path, keys, {endsWith: "?"})
     const params = {}
-    if (regexp.test(url)) {
-        url.replace(regexp, (...args) => {
-            let idx = 1
-            keys.forEach(key => {
-                params[key.name] = args[idx++]
+    if (path) {
+        const regexp = pathToRegexp(path, keys, {endsWith: "?"})
+        if (regexp.test(url)) {
+            url.replace(regexp, (...args) => {
+                let idx = 1
+                keys.forEach(key => {
+                    params[key.name] = args[idx++]
+                })
+                return ''
             })
-            return ''
-        })
+        }
     }
+
     return params
 }
 

@@ -20,6 +20,10 @@ export function routeTo(url: string) {
     })
 }
 
+// 清空所有的Router组件实例
+export function releaseRouter() {
+    ROUTERS.splice(0, ROUTERS.length)
+}
 
 // 根据path判断当前页面路径url是否匹配
 // path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
@@ -49,13 +53,17 @@ class Router extends Component {
             url,
         }
 
-        ROUTERS.push(this) // 通过routers保存当前router实例
-
         // 浏览器环境下注册popstate事件
         if (IS_BROWSER && window.addEventListener) {
+            ROUTERS.push(this) // 通过routers保存当前router实例
             window.removeEventListener('popstate', onpopstate)
             window.addEventListener('popstate', onpopstate)
         }
+    }
+
+    componentWillUnmount() {
+        let idx = ROUTERS.indexOf(this)
+        idx > -1 && ROUTERS.splice(idx, 1)
     }
 
     route(url) {

@@ -21,8 +21,8 @@ const Route2 = () => {
     )
 }
 
-const Route3 = ({router, location})=>{
-
+const Route3 = ({router, location}) => {
+    return (<div> Route page3</div>)
 }
 
 const routes = [{
@@ -37,7 +37,7 @@ const routes = [{
     path: '/route2',
     component: Route2
 }, {
-    path: '/route3/:id',
+    path: '/route3',
     component: Route3
 }]
 
@@ -60,6 +60,7 @@ class App extends Component {
                     <Link href="/">index</Link>
                     <Link href="/route1?a=1">router1</Link>
                     <Link href="/route2">router2</Link>
+                    <Link href="/route3" class="text-xs" style="color:red;">router3</Link>
                 </nav>
                 <main>
                     <Router routes={routes}/>

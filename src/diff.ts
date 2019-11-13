@@ -31,6 +31,7 @@ let currentRoot: VNode // 保存当前diff过程新的根节点，判断是否�
 // 现在diff过程变成了异步的流程，因此只能在回调函数中等待
 function diff(oldFiber: VNode, newFiber: VNode, cb?: Function) {
     // 表示前一个diff任务尚未结束，但又调用了新的diff
+    // todo ，此处不能单纯地放弃旧任务，而应该合并旧任务与新任务的变化
     if (currentRoot) {
         cancelWork()
     }
@@ -278,7 +279,7 @@ function appendContext(child: VNode) {
     while (parent && !isComponent(parent.type)) {
         parent = parent.$parent
     }
-    
+
     if (parent && parent.props && parent.props.context) {
         child.props.context = Object.assign(child.props.context || {}, parent.props.context)
     }

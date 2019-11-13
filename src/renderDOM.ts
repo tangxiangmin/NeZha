@@ -1,5 +1,5 @@
 import {isComponent, isTextNode, VNode} from "./fiber";
-import {isEventProp, isFilterProp} from "./util";
+import {isEventProp, isFilterProp, isNativeProp} from "./util";
 import {diffSync} from "./diff";
 import {doPatch} from "./patch";
 
@@ -76,9 +76,18 @@ function removeDOM(oldNode: VNode) {
 
 // 设置DOM节点属性
 function setAttributes(vnode: VNode, attrs) {
-    if (isComponent(vnode.type)) {
-        // 如果是在组件节点上设置属性，则将其属性设置到其元素子节点上
-        setAttributes(vnode.$child, attrs)
+    if (isComponent(vnode.type) && attrs) {
+        // 如果是在组件节点上设置某些原生属性，则将其属性设置到其元素子节点上
+        let nativePropKeys = Object.keys(attrs).filter(isNativeProp)
+        if (nativePropKeys.length > 0) {
+            let nativeProps = nativePropKeys.reduce((acc, key) => {
+                acc[key] = attrs[key]
+                return acc
+            }, {})
+
+            setAttributes(vnode.$child, nativeProps)
+        }
+
     } else if (isTextNode(vnode.type)) {
         // @ts-ignore
         vnode.$el.nodeValue = vnode.props.nodeValue

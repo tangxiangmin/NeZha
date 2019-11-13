@@ -1,5 +1,5 @@
 import * as router from './history'
-import Router from './Router'
+import Router, {releaseRouter} from './Router'
 import Route from './Route'
 import Link from './Link'
 
@@ -8,4 +8,5 @@ export {
     Route,
     Link,
     router,
+    releaseRouter,
 }

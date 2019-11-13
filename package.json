@@ -1,10 +1,18 @@
 {
-  "name": "nezha",
+  "name": "@shymean/nezha",
   "version": "1.0.0",
-  "main": "index.js",
-  "keywords": [],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "keywords": [
+    "NeZha",
+    "Nax",
+    "NeZhaRouter",
+    "React",
+    "Redux",
+    "ReactRouter"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tangxiangmin/NeZha.git"
@@ -13,12 +21,18 @@
     "url": "https://github.com/tangxiangmin/NeZha/issues"
   },
   "homepage": "https://github.com/tangxiangmin/NeZha#readme",
-  "description": "a little react",
+  "description": "A mini react framework, implemented virtual DOM,Router,Redux and so on",
   "scripts": {
     "dev": "webpack-dev-server --inline --config webpack.dev.js --mode development",
     "build": "tsc index.ts --outDir dist --declaration true && npm pack",
     "dev:ssr": "concurrently 'webpack --config webpack.ssr.js --watch --mode development' 'nodemon --watch \"./demo/ssr/**/*\" -e ts,tsx --exec ts-node ./demo/ssr/entry.ts'",
     "test": "mocha"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",

@@ -19,6 +19,12 @@ export function isFilterProp(prop: string): boolean {
     return blackList.includes(prop)
 }
 
+// 组件节点向其子节点透传一些原生的属性
+export function isNativeProp(prop: string): boolean {
+    let whiteList = ['title', 'class', 'className', 'style']
+    return whiteList.includes(prop)
+}
+
 export const flattenArray = function (arr: Array<any>) {
     let ans = []
     for (let i = 0; i < arr.length; ++i) {
