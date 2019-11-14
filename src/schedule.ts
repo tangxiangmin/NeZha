@@ -25,8 +25,10 @@ function scheduleWork(workLoop: Function) {
     scheduledCallback = workLoop
     // 注册异步任务，我们可以采用下面这两种策略来进行进行调度
     // TODO 由于iOS上safari不支持requestIdleCallback，需要手动hack，此处暂时处理为使用 requestAnimationFrame
-    //@ts-ignore
-    requestIdleCallback ? requestIdleCallback(onIdleFrame) : requestAnimationFrame(onAnimationFrame)
+    if (typeof window !== undefined) {
+        //@ts-ignore
+        window.requestIdleCallback ? window.requestIdleCallback(onIdleFrame) : window.requestAnimationFrame(onAnimationFrame);
+    }
 }
 
 // 取消之前注册的diff任务

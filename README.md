@@ -12,6 +12,8 @@ Nezha
 * [VNode与Component](https://www.shymean.com/article/VNode%E4%B8%8EComponent)
 * [理解数据状态管理](https://www.shymean.com/article/%E7%90%86%E8%A7%A3%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86)
 
+最后使用该项目通过SSR重构了自己的博客[Shymean](https://github.com/tangxiangmin/ShyMean)，[在线访问地址](https://www.shymean.com/)
+
 ## Step
 ```
 # 开发模式
