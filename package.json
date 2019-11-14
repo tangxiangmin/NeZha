@@ -1,6 +1,6 @@
 {
   "name": "@shymean/nezha",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "keywords": [
@@ -26,7 +26,8 @@
     "dev": "webpack-dev-server --inline --config webpack.dev.js --mode development",
     "build": "tsc index.ts --outDir dist --declaration true && npm pack",
     "dev:ssr": "concurrently 'webpack --config webpack.ssr.js --watch --mode development' 'nodemon --watch \"./demo/ssr/**/*\" -e ts,tsx --exec ts-node ./demo/ssr/entry.ts'",
-    "test": "mocha"
+    "test": "mocha",
+    "publish": "npm run build && npm publish --access=public"
   },
   "files": [
     "dist"

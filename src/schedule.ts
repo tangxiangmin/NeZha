@@ -2,9 +2,6 @@
  * 具体思路，在当前帧结束后暂停任务交给主线程，然后再下一帧的空闲时间继续未完成的任务
  */
 
-//@ts-ignore
-
-// const requestIdleCallback = window.requestIdleCallback
 
 type timestamp = number
 // 默认1秒30帧运行，即一个切片最多运行的时间
@@ -27,10 +24,9 @@ function shouldYield(): boolean {
 function scheduleWork(workLoop: Function) {
     scheduledCallback = workLoop
     // 注册异步任务，我们可以采用下面这两种策略来进行进行调度
-
-    //requestAnimationFrame(onAnimationFrame)
-    // @ts-ignore
-    requestIdleCallback(onIdleFrame)
+    // TODO 由于iOS上safari不支持requestIdleCallback，需要手动hack，此处暂时处理为使用 requestAnimationFrame
+    //@ts-ignore
+    requestIdleCallback ? requestIdleCallback(onIdleFrame) : requestAnimationFrame(onAnimationFrame)
 }
 
 // 取消之前注册的diff任务
