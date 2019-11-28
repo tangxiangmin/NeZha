@@ -9,18 +9,9 @@ import {RouteConfig} from "../../router/Route";
 import {Home, About, List} from "./pages";
 
 const routes: Array<RouteConfig> = [
-    {
-        path: '/',
-        component: Home
-    },
-    {
-        path: '/about',
-        component: About
-    },
-    {
-        path: '/list',
-        component: List
-    },
+    {path: '/', component: Home},
+    {path: '/about', component: About},
+    {path: '/list', component: List},
     {
         component: () => {
             return (<div>404</div>)
