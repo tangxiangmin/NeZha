@@ -1,6 +1,6 @@
 {
   "name": "nezha-router",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "tangxiangmin <645234650@qq.com>",
   "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nezha-router#readme",
@@ -29,7 +29,7 @@
     "url": "https://github.com/tangxiangmin/NeZha/issues"
   },
   "dependencies": {
-    "nezha": "^0.0.1",
+    "nezha": "^0.0.2",
     "path-to-regexp": "^6.1.0"
   },
   "gitHead": "937346c88baa0f25f05ebeda23d0274bca3d6b56"
