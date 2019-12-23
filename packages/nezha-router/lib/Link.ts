@@ -1,5 +1,5 @@
 // Link组件
-import {h} from "../src";
+import {h} from "nezha";
 
 import {push} from './history'
 

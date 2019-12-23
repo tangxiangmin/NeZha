@@ -1,4 +1,4 @@
-import {h} from '../src'
+import {h} from '../packages/nezha/lib'
 import {assert} from "chai";
 import {createLocation, parseQuery} from "../router/location";
 

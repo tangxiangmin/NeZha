@@ -1,6 +1,6 @@
 // TODO 实现初始化时服务端的数据请求，以及数据的埋入与同步
 // TODO 实现404页面
-import {Component, h} from "../../src";
+import {Component, h} from "../../packages/nezha/lib";
 import {getList} from "./api";
 
 const Home = () => {

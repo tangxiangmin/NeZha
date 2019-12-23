@@ -2,10 +2,10 @@
  * 2019/11/4 下午10:58
  * 如果为某个组件注册了名为context的prop，则其所有子节点都可以访问到该context
  */
-import {h, Component, renderDOM} from '../src/index.ts'
-import * as Nax from "../nax";
+import {h, Component, renderDOM} from '../packages/nezha/lib'
+import * as Nax from "../packages/nezha-nax/lib";
 
-import connect from "../nax/connect";
+import connect from "../packages/nezha-nax/lib/connect";
 
 const initState = {
     list: [1, 2, 3]

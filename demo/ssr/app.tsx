@@ -2,7 +2,7 @@
  * 2019/11/1 下午10:23
  * 整个单页应用的根节点 <App />
  */
-import {h} from '../../src'
+import {h} from '../../packages/nezha/lib'
 
 import {Router, Link} from '../../router'
 import routes from './routes'

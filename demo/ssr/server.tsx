@@ -9,7 +9,7 @@ const path = require('path')
 const app = express();
 
 import App from './app'
-import {Component, h, renderHTML} from '../../src'
+import {Component, h, renderHTML} from '../../packages/nezha/lib'
 import routes from "./routes";
 import {createStore} from "./store";
 

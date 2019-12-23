@@ -1,0 +1,32 @@
+{
+  "name": "nezha",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "tangxiangmin <645234650@qq.com>",
+  "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nezha#readme",
+  "license": "ISC",
+  "main": "esm/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__",
+    "esm": "esm"
+  },
+  "files": [
+    "lib",
+    "esm"
+  ],
+  "publishConfig": {
+    "registry": "http://localhost:4873/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangxiangmin/NeZha.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "build": "tsc lib/index.ts --outDir esm --declaration true --target ES6"
+  },
+  "bugs": {
+    "url": "https://github.com/tangxiangmin/NeZha/issues"
+  }
+}

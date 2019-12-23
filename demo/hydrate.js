@@ -1,7 +1,7 @@
 /**
  * 2019/11/14 下午9:45
  */
-import {h, hydrateDOM} from '../src/index'
+import {h, hydrateDOM} from '../packages/nezha/lib'
 
 
 app.innerHTML = `<div><h1>title</h1><p>content</p><p>123123</p></div>`

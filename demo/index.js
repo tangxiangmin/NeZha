@@ -2,7 +2,7 @@
  * 2019/10/22 下午1:44
  */
 
-import {h, renderDOM, Component, renderHTML} from '../src/index'
+import {h, renderDOM, Component, renderHTML} from 'nezha'
 
 class SubTitle extends Component {
     state = {

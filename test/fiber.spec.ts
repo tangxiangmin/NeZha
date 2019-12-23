@@ -1,8 +1,8 @@
 import {assert} from 'chai'
 
-import {isTextNode} from "../src/fiber";
+import {isTextNode} from "../packages/nezha/lib/fiber";
 
-import {h, Component} from "../src";
+import {h, Component} from "../packages/nezha/lib";
 
 describe('createFiber', () => {
     it('check env: should pass 100%', () => {

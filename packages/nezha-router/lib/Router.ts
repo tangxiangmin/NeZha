@@ -1,6 +1,6 @@
 import * as pathToRegexp from 'path-to-regexp'
-import {Component} from "../src";
-import {VNode} from "../src/fiber";
+import {Component} from "nezha";
+import {VNode} from "nezha/esm/fiber";
 
 import {getCurrentUrl} from './history'
 import {createRoute, RouteConfig} from "./Route";
@@ -29,6 +29,7 @@ export function releaseRouter() {
 // path增加支持正则匹配组件 https://github.com/pillarjs/path-to-regexp#readme
 function match(path: string, url: string): boolean {
     const keys = []
+    // @ts-ignore
     const regexp = pathToRegexp(path, keys, {endsWith: "?"})
     return regexp.test(url)
 }

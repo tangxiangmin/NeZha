@@ -2,7 +2,7 @@
  * 2019/11/1 下午9:11
  * 一份前后台共用的路由配置，
  */
-import {Component, h} from '../../src'
+import {Component, h} from '../../packages/nezha/lib'
 import {RouteConfig} from "../../router/Route";
 
 

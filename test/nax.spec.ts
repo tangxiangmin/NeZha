@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, combineReducers} from "../nax";
+import {createStore, applyMiddleware, combineReducers} from "../packages/nezha-nax/lib";
 import {assert} from "chai";
 
 

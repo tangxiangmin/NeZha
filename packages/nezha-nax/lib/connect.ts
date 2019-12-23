@@ -4,7 +4,7 @@
  * 使用connect之前，需要通过context注入全局的store
  * 使用方式 connect((state)=>{list:state.list})(App)
  */
-import {h} from '../src'
+import {h} from 'nezha'
 
 function connect(mapStateToProps: Function) {
     return (Comp) => {
