@@ -1,10 +1,12 @@
+/**
+ * 2019/11/3 下午11:16
+ */
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    context: __dirname,
-    entry: './demo/hydrate.js',
+    entry: './demo/ssr/client.tsx',
     output: {
+        path: path.resolve(__dirname, './ssr/dist/'),
         publicPath: '/'
     },
     resolve: {
@@ -22,14 +24,4 @@ module.exports = {
             }
         ]
     },
-    devtool: 'inline-source-map',
-
-    devServer: {
-        historyApiFallback: true
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "./demo/index.html"),
-        })
-    ]
 };

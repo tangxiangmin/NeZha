@@ -4,3 +4,4 @@ doc
 dist/
 esm/
 *.tgz
+lib/

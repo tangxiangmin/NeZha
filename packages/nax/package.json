@@ -1,35 +1,36 @@
 {
-  "name": "nezha-nax",
+  "name": "@shymean/nax",
   "version": "0.0.2",
   "description": "> TODO: description",
   "author": "tangxiangmin <645234650@qq.com>",
-  "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nezha-nax#readme",
+  "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nax#readme",
   "license": "ISC",
-  "main": "esm/index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "src/index.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
   },
   "files": [
     "lib",
-    "esm"
+    "esm",
+    "src"
   ],
   "publishConfig": {
-    "registry": "http://localhost:4873/"
+    "registry": "https://registry.npm.taobao.org/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tangxiangmin/NeZha.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "tsc lib/index.ts --outDir esm --declaration true --target ES6"
+    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/tangxiangmin/NeZha/issues"
   },
   "dependencies": {
-    "nezha": "^0.0.2"
-  },
-  "gitHead": "937346c88baa0f25f05ebeda23d0274bca3d6b56"
+    "@shymean/nezha": "^0.0.2"
+  }
 }

@@ -1,11 +1,11 @@
-# `nezha-nax`
+# `@shymean/nax`
 
 > TODO: description
 
 ## Usage
 
 ```
-const nezhaNax = require('nezha-nax');
+const nax = require('@shymean/nax');
 
 // TODO: DEMONSTRATE API
 ```

@@ -1,11 +1,11 @@
-# `nezha-router`
+# `@shymean/nezha-router`
 
 > TODO: description
 
 ## Usage
 
 ```
-const nezhaRouter = require('nezha-router');
+const nezhaRouter = require('@shymean/nezha-router');
 
 // TODO: DEMONSTRATE API
 ```

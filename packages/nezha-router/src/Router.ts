@@ -1,6 +1,8 @@
-import * as pathToRegexp from 'path-to-regexp'
-import {Component} from "nezha";
-import {VNode} from "nezha/esm/fiber";
+// import * as pathToRegexp from 'path-to-regexp'
+const { pathToRegexp } = require("path-to-regexp");
+
+import {Component} from "@shymean/nezha";
+import {VNode} from "@shymean/nezha/src/fiber";
 
 import {getCurrentUrl} from './history'
 import {createRoute, RouteConfig} from "./Route";

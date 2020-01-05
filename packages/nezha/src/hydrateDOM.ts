@@ -60,7 +60,6 @@ function hydrateDOM(root, dom) {
     }
     // 与第一个真实DOM做比较，因此此处要求组件都是单节点结果
     let isSuccess = walk(root, dom.children[0])
-    console.log(isSuccess)
     if (!isSuccess) forceHydrate(root, dom)
 }
 

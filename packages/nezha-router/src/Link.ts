@@ -1,5 +1,5 @@
 // Link组件
-import {h} from "nezha";
+import {h} from "@shymean/nezha";
 
 import {push} from './history'
 

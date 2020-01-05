@@ -2,6 +2,6 @@
 
 const nezha = require('..');
 
-describe('nezha', () => {
+describe('@shymean/nezha', () => {
     it('needs tests');
 });

@@ -2,6 +2,6 @@
 
 const nezhaRouter = require('..');
 
-describe('nezha-router', () => {
+describe('@shymean/nezha-router', () => {
     it('needs tests');
 });
