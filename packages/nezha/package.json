@@ -1,6 +1,6 @@
 {
   "name": "@shymean/nezha",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A mini react framework",
   "author": "tangxiangmin <645234650@qq.com>",
   "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nezha#readme",
@@ -30,5 +30,6 @@
   },
   "bugs": {
     "url": "https://github.com/tangxiangmin/NeZha/issues"
-  }
+  },
+  "gitHead": "79c4c6caab38d3fe597778ae17323e64c7a74395"
 }
