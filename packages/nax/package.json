@@ -17,9 +17,6 @@
     "esm",
     "src"
   ],
-  "publishConfig": {
-    "registry": "https://registry.npm.taobao.org/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tangxiangmin/NeZha.git"

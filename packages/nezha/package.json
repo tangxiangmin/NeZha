@@ -18,9 +18,6 @@
     "esm",
     "src"
   ],
-  "publishConfig": {
-    "registry": "http://localhost:4873/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tangxiangmin/NeZha.git"
