@@ -1,5 +1,5 @@
 // Route组件
-import {Component, h} from "../src";
+import {Component, h} from "@shymean/nezha";
 import * as router from "./history";
 import {NeZhaLocation} from "./location";
 

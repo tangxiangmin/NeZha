@@ -1,4 +1,6 @@
-import * as pathToRegexp from 'path-to-regexp'
+// import * as pathToRegexp from 'path-to-regexp'
+const { pathToRegexp } = require("path-to-regexp");
+
 
 // 将url解析成location对象
 export interface NeZhaLocation {

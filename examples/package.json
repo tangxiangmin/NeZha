@@ -1,0 +1,74 @@
+{
+  "name": "@shymean/nezha",
+  "version": "1.0.4",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "keywords": [
+    "NeZha",
+    "Nax",
+    "NeZhaRouter",
+    "React",
+    "Redux",
+    "ReactRouter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangxiangmin/NeZha.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tangxiangmin/NeZha/issues"
+  },
+  "homepage": "https://github.com/tangxiangmin/NeZha#readme",
+  "description": "A mini react framework, implemented virtual DOM,Router,Redux and so on",
+  "scripts": {
+    "dev": "webpack-dev-server --inline --config ./webpack.dev.js --mode development",
+    "dev:ssr": "concurrently 'webpack --config webpack.ssr.js --watch --mode development' 'nodemon --watch \"./ssr/**/*\" -e ts,tsx --exec ts-node ./ssr/entry.ts'"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.55",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.55",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/plugin-transform-react-constant-elements": "^7.0.0-beta.55",
+    "@babel/plugin-transform-react-jsx": "^7.0.0-beta.55",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/preset-react": "^7.0.0-beta.55",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.6.2",
+    "@babel/runtime": "^7.5.5",
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.5",
+    "babel-loader": "^8.0.0-beta.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "css-loader": "^3.2.0",
+    "cz-conventional-changelog": "^3.0.2",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "3.2.0",
+    "mocha": "^6.2.2",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.4",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.0.4",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4",
+    "webpack": "4.33.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-dev-server": "^3.7.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 /**
  * 2019-07-31 15:01
  */
-import {h, Component, renderDOM} from '../packages/nezha/lib'
+import {h, Component, renderDOM} from '../../packages/nezha/lib'
 
 // props和children属性
 const Test = ({msg, children}) => {
