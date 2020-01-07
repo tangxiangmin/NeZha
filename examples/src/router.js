@@ -1,9 +1,9 @@
 /**
  * 2019/10/11 下午10:00
  */
-import {h, Component, renderDOM} from '../../packages/nezha/lib'
+import {h, Component, renderDOM} from '../../packages/nezha/esm'
 
-import {Router, router, Link, Route} from '../../packages/nezha-router/lib'
+import {Router, router, Link, Route} from '../../packages/nezha-router/esm'
 
 import './index.scss'
 

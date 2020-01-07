@@ -28,6 +28,6 @@
     "url": "https://github.com/tangxiangmin/NeZha/issues"
   },
   "dependencies": {
-    "@shymean/nezha": "^0.0.2"
+    "@shymean/nezha": "^1.0.11"
   }
 }

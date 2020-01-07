@@ -10,6 +10,7 @@
   "dependencies": {},
   "devDependencies": {
     "rollup": "^1.27.14",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.3",
     "typescript": "^3.7.4"
   },
