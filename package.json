@@ -15,7 +15,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "publish:local": "lerna publish --skip-git"
   },
   "repository": {
     "type": "git",

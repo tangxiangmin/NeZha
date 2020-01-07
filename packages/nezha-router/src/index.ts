@@ -1,12 +1,20 @@
 import * as router from './history'
-import Router, {releaseRouter} from './Router'
-import Route from './Route'
+import Router, {releaseRouter, getMatchRouteConfig} from './Router'
+import {createLocation} from './location'
+import Route, {RouteConfig} from './Route'
 import Link from './Link'
 
 export {
+    // component
     Router,
     Route,
     Link,
+    // api
     router,
+
     releaseRouter,
+    getMatchRouteConfig,
+    createLocation,
+    // interface
+    RouteConfig
 }
