@@ -46,4 +46,9 @@ npm run build
     * [x] 中间件
 
 
+## TODO
 
+* [ ] router处理hash变化（如id跳转锚点）导致的路由更新
+* [ ] 多次setState进行合并，避免同一个组件触发多次更新，大体思路为使用alternate临时保存更新后的newState，并在commit时将其更新到state上
+* [ ] hydrateDOM逻辑合并到diffRoot中，尽可能复用现有DOM节点
+* [ ] 添加使用文档

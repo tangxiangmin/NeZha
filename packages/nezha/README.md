@@ -1,11 +1,11 @@
 # `@shymean/nezha`
 
-> TODO: description
+> 一个简单的类react组件
 
 ## Usage
 
-```
-const nezha = require('@shymean/nezha');
+```js
+import {h, renderDOM, Component, renderHTML} from '@shymean/nezha'
 
-// TODO: DEMONSTRATE API
+// DEMONSTRATE API 
 ```
