@@ -11,7 +11,7 @@ const linkHandler = (e, url) => {
 const Link = (props: any) => {
     let {href, children = []} = props
     return h('a', {
-        href,
+        ...props,
         onClick: (e) => linkHandler(e, href)
     }, children)
 }
