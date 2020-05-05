@@ -17,7 +17,8 @@
   "scripts": {
     "test": "mocha",
     "build": "node build/build.js",
-    "publish:local": "lerna publish --skip-git"
+    "publish:local": "lerna publish --skip-git",
+    "publish": "npm run build && nrm use npm && lerna publish"
   },
   "repository": {
     "type": "git",
