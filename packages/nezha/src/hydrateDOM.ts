@@ -2,7 +2,7 @@
 import {renderDOM} from "./index";
 import {diffSync} from './diff'
 import {isClassComponent, isComponent, isTextNode, VNode} from "./fiber";
-import {setAttributes} from "./renderDOM";
+import {setAttributes, setAppRoot} from "./renderDOM";
 
 function clearContainer(dom) {
     Array.from(dom.children).forEach(child => {
@@ -54,6 +54,7 @@ function walk(node: VNode, dom: any): Boolean {
 
 // 尝试将已存在的DOM树脱水到vnode树上，更新vnode的$el
 function hydrateDOM(root, dom) {
+    setAppRoot(root)
     diffSync(null, root)
     root.$parent = {
         $el: dom

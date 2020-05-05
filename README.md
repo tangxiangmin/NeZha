@@ -17,6 +17,7 @@ Nezha
 ## Step
 ```
 # 开发模式
+lerna link
 npm run dev
 
 # ssr demo演示

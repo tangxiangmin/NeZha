@@ -13,7 +13,6 @@ const IS_BROWSER = typeof window !== 'undefined'
 
 // todo 如锚点跳转等也会触发popstate，需要处理此类场景
 function onpopstate() {
-    console.log('onpopstate')
     let url = getCurrentUrl()
     routeTo(url)
 }

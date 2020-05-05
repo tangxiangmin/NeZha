@@ -1,3 +1,4 @@
+/// <reference path="./router.d.ts" />
 // Route组件
 import {Component, h} from "@shymean/nezha";
 import * as router from "./history";

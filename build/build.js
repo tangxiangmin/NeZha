@@ -9,6 +9,15 @@ async function build(inputOptions, outputOptions) {
     const {code, map} = await bundle.generate(outputOptions);
 
     await bundle.write(outputOptions);
+
+    // todo 实现watch
+    // rollup.watch({
+    //     ...inputOptions,
+    //     output: [outputOptions],
+    //     watch: {
+    //         include: 'packages/**/src'
+    //     }
+    // })
 }
 
 
@@ -34,10 +43,8 @@ async function start() {
 }
 
 console.log('===start build===')
-start().then(()=>{
+start().then(() => {
     console.log('===end build===')
 })
-
-
 
 

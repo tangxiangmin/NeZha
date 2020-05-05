@@ -3,11 +3,23 @@ import {isEventProp, isFilterProp, isNativeProp} from "./util";
 import {diffSync} from "./diff";
 import {doPatch} from "./patch";
 
-let appRoot: VNode
+const {getAppRoot, setAppRoot} = (() => {
+    let appRoot: VNode
 
-function getAppRoot(): VNode {
-    return appRoot
-}
+    function getAppRoot(): VNode {
+        return appRoot
+    }
+
+    function setAppRoot(node: VNode) {
+        appRoot = node
+    }
+
+    return {
+        getAppRoot,
+        setAppRoot
+    }
+})();
+
 
 // 向上找到最近的DOM节点
 function findLatestParentDOM(node: VNode) {
@@ -112,7 +124,8 @@ function renderDOM(root, dom, cb?: Function) {
         $el: dom
     }
 
-    appRoot = root // 保存整个应用根节点的引用，单个页面只会存在一个应用实例
+    // 保存整个应用根节点的引用，单个页面只会存在一个应用实例
+    setAppRoot(root)
 
     // 初始化时直接使用同步diff
     let patches = diffSync(null, root)
@@ -127,5 +140,6 @@ export {
     setAttributes,
 
     getAppRoot,
+    setAppRoot,
     renderDOM
 }

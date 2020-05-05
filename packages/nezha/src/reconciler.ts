@@ -1,7 +1,5 @@
 import {diff, diffSync} from "./diff";
 import {doPatch} from "./patch";
-import {VNode} from "./fiber";
-
 import {getAppRoot} from './renderDOM'
 
 
