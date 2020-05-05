@@ -1,6 +1,6 @@
 {
   "name": "@shymean/nax",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "> TODO: description",
   "author": "tangxiangmin <645234650@qq.com>",
   "homepage": "https://github.com/tangxiangmin/NeZha/tree/master/packages/nax#readme",
@@ -28,6 +28,6 @@
     "url": "https://github.com/tangxiangmin/NeZha/issues"
   },
   "dependencies": {
-    "@shymean/nezha": "^1.0.18"
+    "@shymean/nezha": "^1.0.19"
   }
 }
