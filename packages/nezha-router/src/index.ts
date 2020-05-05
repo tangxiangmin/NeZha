@@ -1,3 +1,5 @@
+/// <reference path="./router.d.ts" />
+
 import * as router from './history'
 import Router, {releaseRouter, getMatchRouteConfig} from './Router'
 import {createLocation} from './location'

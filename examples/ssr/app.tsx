@@ -4,7 +4,7 @@
  */
 import {h} from '../../packages/nezha/lib'
 
-import {Router, Link} from '../../router'
+import {Router, Link} from '../../packages/nezha-router/lib'
 import routes from './routes'
 
 const App = ({url = '', context}) => {
@@ -12,9 +12,9 @@ const App = ({url = '', context}) => {
         <div>
             <h1>Hello SSR</h1>
             <nav>
-                <Link href="/" ><button>home</button> </Link>
-                <Link href="/about"><button>about</button> </Link>
-                <Link href="/list"><button>list</button> </Link>
+                <Link class="nav_item" href="/" ><button>home</button> </Link>
+                <Link class="nav_item"  href="/about"><button>about</button> </Link>
+                <Link class="nav_item"  href="/list"><button>list</button> </Link>
             </nav>
 
             <Router routes={routes} url={url}/>

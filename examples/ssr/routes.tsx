@@ -3,7 +3,7 @@
  * 一份前后台共用的路由配置，
  */
 import {Component, h} from '../../packages/nezha/lib'
-import {RouteConfig} from "../../router/Route";
+import {RouteConfig} from "../../packages/nezha-router/lib";
 
 
 import {Home, About, List} from "./pages";

@@ -1,5 +1,5 @@
 // import * as pathToRegexp from 'path-to-regexp'
-const { pathToRegexp } = require("path-to-regexp");
+const {pathToRegexp} = require("path-to-regexp");
 
 import {Component} from "@shymean/nezha";
 import {VNode} from "@shymean/nezha/src/fiber";
@@ -11,7 +11,9 @@ import {createLocation} from "./location";
 const ROUTERS: Array<Router> = []
 const IS_BROWSER = typeof window !== 'undefined'
 
+// todo 如锚点跳转等也会触发popstate，需要处理此类场景
 function onpopstate() {
+    console.log('onpopstate')
     let url = getCurrentUrl()
     routeTo(url)
 }

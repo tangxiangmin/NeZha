@@ -1,7 +1,8 @@
 // Route组件
 import {Component, h} from "@shymean/nezha";
 import * as router from "./history";
-import {NeZhaLocation} from "./location";
+
+type NeZhaLocation = NeZhaRouter.NeZhaLocation
 
 export interface RouteConfig {
     path?: string,

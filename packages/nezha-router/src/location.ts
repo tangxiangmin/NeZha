@@ -1,13 +1,6 @@
 // import * as pathToRegexp from 'path-to-regexp'
-const { pathToRegexp } = require("path-to-regexp");
+const {pathToRegexp} = require("path-to-regexp");
 
-
-// 将url解析成location对象
-export interface NeZhaLocation {
-    path: string,
-    query: Object,
-    params?: Object, // 类似/:id/:foo路径上的参数
-}
 
 // 将a=1&b=2&c=3形式的search参数解析为{a:1,b:2,c:3}形式的query对象
 export function parseQuery(search: string): Object {
@@ -40,7 +33,7 @@ function parseParam(url: string, path: string): Object {
     return params
 }
 
-export function createLocation(url: string, path?: string): NeZhaLocation {
+export function createLocation(url: string, path?: string): NeZhaRouter.NeZhaLocation {
     let arr = url.split('?')
     let pathName = arr[0]
     return {

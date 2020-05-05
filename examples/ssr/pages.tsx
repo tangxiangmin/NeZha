@@ -12,6 +12,7 @@ const About = () => {
 }
 
 class List extends Component {
+
     static async asyncData(store) {
         // 首先获取数据
         let list = await getList()
@@ -26,30 +27,36 @@ class List extends Component {
 
     constructor(props) {
         super(props);
-        let {store} = this.props.context
-
-        let {list} = store.getState()
-        this.state = {
-            list
-        }
-
-        store.subscribe(function () {
-            let {list} = store.getState()
-            this.setState({list})
-        })
+        // let {store} = this.props.context
+        //
+        // let {list} = store.getState()
+        // this.state = {
+        //     list
+        // }
+        //
+        // store.subscribe(function () {
+        //     let {list} = store.getState()
+        //     this.setState({list})
+        // })
     }
 
     render() {
-        let {list} = this.state
+        // let {list} = this.state
+        let list = [1, 2, 3]
         return (<div>
             <h2>list</h2>
             <ul>
                 {
                     list.map(item => {
-                        return <li key={item}>{item}</li>
+                        return <li key={item}><a class="anchor" href={'#t' + item}>{item}</a></li>
                     })
                 }
             </ul>
+            {
+                ['t1', 't2', 't3'].map(item => {
+                    return <div id={item} style="height:1000px;">{item}</div>
+                })
+            }
         </div>);
     }
 }

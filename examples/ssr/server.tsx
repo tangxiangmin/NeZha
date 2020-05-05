@@ -2,7 +2,7 @@
  * 2019/11/1 下午9:11
  * 服务器应用，响应浏览器请求，根据url渲染对应页面组件，然后返回
  */
-import {getMatchRouteConfig} from "../../router/Router";
+import {getMatchRouteConfig} from "../../packages/nezha-router/lib";
 
 const express = require('express')
 const path = require('path')
